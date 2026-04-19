@@ -85,6 +85,8 @@ export class Constants {
         '.quality-ui-label': 'quality',
         '.sky-lighting-label': 'skyLighting',
         '.scaleFactor-label': 'scaleFactor',
+        '.word-shell-label': 'wordShell',
+        '.word-text-label': 'wordText',
         '.auto-launch-label': 'autoLaunch',
         '.finale-mode-label': 'finaleMode',
         '.hide-controls-label': 'hideControls',

@@ -69,6 +69,7 @@ export class ParticleSystem {
         instance.speedX = Math.sin(angle) * speed;
         instance.speedY = Math.cos(angle) * speed;
         instance.life = life;
+
         this.sparks[color].push(instance);
         return instance;
     }
@@ -82,6 +83,7 @@ export class ParticleSystem {
         instance.x = x;
         instance.y = y;
         instance.radius = radius;
+
         this.burstFlashes.push(instance);
         return instance;
     }

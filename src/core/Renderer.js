@@ -14,16 +14,8 @@ export class Renderer {
         this.stageH = 0;
         this.speedBarOpacity = 0;
         this.currentFrame = 0;
-        this.currentSkyColor = {
-            r: 0,
-            g: 0,
-            b: 0
-        };
-        this.targetSkyColor = {
-            r: 0,
-            g: 0,
-            b: 0
-        };
+        this.currentSkyColor = { r: 0, g: 0, b: 0 };
+        this.targetSkyColor = { r: 0, g: 0, b: 0 };
 
         this.handleResize();
         window.addEventListener('resize', () => this.handleResize());
@@ -79,9 +71,7 @@ export class Renderer {
     }
 
     render(speed) {
-        const {
-            dpr
-        } = this.mainStage;
+        const { dpr } = this.mainStage;
         const trailsCtx = this.trailsStage.ctx;
         const mainCtx = this.mainStage.ctx;
         const sf = this.app.stateManager.scaleFactor || 1;

@@ -25,6 +25,8 @@ export class UIManager {
             quality: document.querySelector('.quality-ui'),
             skyLighting: document.querySelector('.sky-lighting'),
             scaleFactor: document.querySelector('.scaleFactor'),
+            wordShell: document.querySelector('.word-shell'),
+            wordText: document.querySelector('.word-text'),
             autoLaunch: document.querySelector('.auto-launch'),
             finaleMode: document.querySelector('.finale-mode'),
             finaleModeFormOption: document.querySelector('.form-option--finale-mode'),
@@ -53,26 +55,24 @@ export class UIManager {
         const t = (k) => this.i18n.t(k);
 
         this.setOptions(this.nodes.appLanguage, [{
-                label: t('opt.langAuto'),
-                value: 'auto'
-            },
-            {
-                label: 'English',
-                value: 'en'
-            },
-            {
-                label: 'Indonesia',
-                value: 'id'
-            }
-        ]);
+            label: t('opt.langAuto'),
+            value: 'auto'
+        }, {
+            label: 'English',
+            value: 'en'
+        }, {
+            label: 'Indonesia',
+            value: 'id'
+        }]);
 
         const translatedShells = ShellFactory.shellNames.map(name => {
-            const camelKey = name.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => index === 0 ? word.toLowerCase() : word.toUpperCase()).replace(/\s+/g, '');
+            const camelKey = name.replace(/(?:^\w|[A-Z]|\b\w)/g, (w, i) => i === 0 ? w.toLowerCase() : w.toUpperCase()).replace(/\s+/g, '');
             return {
                 label: t('opt.' + camelKey) !== 'opt.' + camelKey ? t('opt.' + camelKey) : name,
                 value: name
             };
         });
+
         this.setOptions(this.nodes.shellType, translatedShells);
 
         this.setOptions(this.nodes.shellSize, ['3"', '4"', '6"', '8"', '12"', '16"'].map((opt, i) => ({
@@ -81,32 +81,26 @@ export class UIManager {
         })));
 
         this.setOptions(this.nodes.quality, [{
-                label: t('opt.low'),
-                value: Constants.QUALITY_LOW
-            },
-            {
-                label: t('opt.normal'),
-                value: Constants.QUALITY_NORMAL
-            },
-            {
-                label: t('opt.high'),
-                value: Constants.QUALITY_HIGH
-            }
-        ]);
+            label: t('opt.low'),
+            value: Constants.QUALITY_LOW
+        }, {
+            label: t('opt.normal'),
+            value: Constants.QUALITY_NORMAL
+        }, {
+            label: t('opt.high'),
+            value: Constants.QUALITY_HIGH
+        }]);
 
         this.setOptions(this.nodes.skyLighting, [{
-                label: t('opt.none'),
-                value: Constants.SKY_LIGHT_NONE
-            },
-            {
-                label: t('opt.dim'),
-                value: Constants.SKY_LIGHT_DIM
-            },
-            {
-                label: t('opt.normal'),
-                value: Constants.SKY_LIGHT_NORMAL
-            }
-        ]);
+            label: t('opt.none'),
+            value: Constants.SKY_LIGHT_NONE
+        }, {
+            label: t('opt.dim'),
+            value: Constants.SKY_LIGHT_DIM
+        }, {
+            label: t('opt.normal'),
+            value: Constants.SKY_LIGHT_NORMAL
+        }]);
 
         this.setOptions(this.nodes.scaleFactor, [0.5, 0.62, 0.75, 0.9, 1.0, 1.5, 2.0].map(v => ({
             value: v.toFixed(2),
@@ -140,6 +134,8 @@ export class UIManager {
                     quality: this.nodes.quality.value,
                     shell: this.nodes.shellType.value,
                     size: this.nodes.shellSize.value,
+                    wordShell: this.nodes.wordShell.checked,
+                    customWords: this.nodes.wordText.value || "BOOM,WOW",
                     autoLaunch: this.nodes.autoLaunch.checked,
                     finale: this.nodes.finaleMode.checked,
                     skyLighting: this.nodes.skyLighting.value,
@@ -150,11 +146,11 @@ export class UIManager {
             });
         };
 
-        ['quality', 'shellType', 'shellSize', 'skyLighting'].forEach(key => {
+        ['quality', 'shellType', 'shellSize', 'skyLighting', 'wordText'].forEach(key => {
             if (this.nodes[key]) this.nodes[key].addEventListener('input', updateConfig);
         });
 
-        ['autoLaunch', 'finaleMode', 'longExposure', 'hideControls'].forEach(key => {
+        ['wordShell', 'autoLaunch', 'finaleMode', 'longExposure', 'hideControls'].forEach(key => {
             if (this.nodes[key]) this.nodes[key].addEventListener('click', () => setTimeout(updateConfig, 0));
         });
 
@@ -214,7 +210,7 @@ export class UIManager {
         }
     }
 
-    render(state, prevState) {
+    render(state) {
         if (!this.nodes.pauseBtnSVG || !this.nodes.soundBtnSVG) return;
 
         this.nodes.pauseBtnSVG.setAttribute('href', `#icon-${state.paused ? 'play' : 'pause'}`);
@@ -222,11 +218,15 @@ export class UIManager {
         this.nodes.controls.classList.toggle('hide', state.menuOpen || state.config.hideControls);
         this.nodes.canvasContainer.classList.toggle('blur', state.menuOpen);
         this.nodes.menu.classList.toggle('hide', !state.menuOpen);
+
         this.nodes.finaleModeFormOption.style.opacity = state.config.autoLaunch ? 1 : 0.32;
+        this.nodes.wordText.parentElement.style.opacity = state.config.wordShell ? 1 : 0.32;
 
         this.nodes.quality.value = state.config.quality;
         this.nodes.shellType.value = state.config.shell;
         this.nodes.shellSize.value = state.config.size;
+        this.nodes.wordShell.checked = state.config.wordShell;
+        this.nodes.wordText.value = state.config.customWords;
         this.nodes.autoLaunch.checked = state.config.autoLaunch;
         this.nodes.finaleMode.checked = state.config.finale;
         this.nodes.skyLighting.value = state.config.skyLighting;

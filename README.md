@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎆 <br /> <u>Firework Simulator</u>Ultra Realistic Edition
+# 🎆 <br /> <u>Firework Simulator</u> <br />Super Realistic 2D
 
 An advanced, highly realistic, and feature-rich fireworks simulation built with HTML5 Canvas and JavaScript.
 
@@ -17,6 +17,9 @@ Originally inspired by and based on [Caleb Miller's v2 CodePen](https://codepen.
 * Interactive Slow-Motion: Control the simulation speed by dragging near the bottom of the screen.
 
 ## 🚀 Version Changelog & New Features
+
+### [v3.0] - Core Additions
+* **Dynamic Word Shell:** Introduced the ability to spawn custom text fireworks dynamically.
 
 ### [v2.5] - Foundation
 * **OOP Refactor:** Completely rewritten from procedural code into clean, modular ES6 Classes.
