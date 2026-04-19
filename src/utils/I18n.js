@@ -16,6 +16,8 @@ export class I18nData {
                 quality: "Quality",
                 skyLighting: "Sky Lighting",
                 scale: "Scale",
+                wordShell: "Word Firework",
+                wordText: "Custom Words",
                 autoFire: "Auto Fire",
                 finaleMode: "Finale Mode",
                 hideControls: "Hide Controls",
@@ -64,6 +66,14 @@ export class I18nData {
                     h: "Scale",
                     b: "Allows scaling the size of all fireworks, essentially moving you closer or farther away."
                 },
+                wordShell: {
+                    h: "Word Firework",
+                    b: "Randomly replaces a firework burst with a custom word from the text field. Looks incredibly realistic with real explosion physics!"
+                },
+                wordText: {
+                    h: "Custom Words",
+                    b: "Comma-separated list of words to display when 'Word Firework' is enabled. Keep words short for best results (e.g. BOOM, WOW, 2026)."
+                },
                 autoLaunch: {
                     h: "Auto Fire",
                     b: "Launches sequences of fireworks automatically. Sit back and enjoy the show, or disable to have full control."
@@ -99,6 +109,8 @@ export class I18nData {
                 quality: "Kualitas Grafis",
                 skyLighting: "Cahaya Langit",
                 scale: "Skala Tampilan",
+                wordShell: "Kembang Api Teks",
+                wordText: "Kata Kustom",
                 autoFire: "Tembak Otomatis",
                 finaleMode: "Mode Finale",
                 hideControls: "Sembunyikan Tombol",
@@ -147,6 +159,14 @@ export class I18nData {
                     h: "Skala",
                     b: "Buat ngatur ukuran semua kembang api, seolah-olah lu lagi maju atau mundur ngeliatnya."
                 },
+                wordShell: {
+                    h: "Kembang Api Teks",
+                    b: "Kadang-kadang memunculkan kembang api berbentuk kata kustom. Tenang, ledakannya realistis banget ngikutin hukum fisika loh!"
+                },
+                wordText: {
+                    h: "Kata Kustom",
+                    b: "Daftar kata yang mau ditampilin (pisahin pakai koma). Biar cakep dan jelas dibaca, usahain katanya pendek-pendek aja (misal: BOOM, WOW, MANTAP)."
+                },
                 autoLaunch: {
                     h: "Tembak Otomatis",
                     b: "Otomatis nembakin kembang api tanpa henti. Tinggal duduk manis dan nikmatin aja, atau matiin buat kontrol manual."
@@ -179,12 +199,10 @@ export class I18nManager {
     constructor() {
         this.supportedLangs = ['en', 'id'];
         this.defaultLang = 'en';
-
         let saved = null;
         try {
             saved = localStorage.getItem('firework_lang');
         } catch (e) {}
-
         this.selectedSetting = saved || 'auto';
         this.currentLang = this.selectedSetting === 'auto' ? this.detectSystemLang() : this.selectedSetting;
     }
@@ -199,7 +217,6 @@ export class I18nManager {
         try {
             localStorage.setItem('firework_lang', setting);
         } catch (e) {}
-
         this.currentLang = setting === 'auto' ? this.detectSystemLang() : setting;
         this.translateDOM();
     }

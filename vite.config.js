@@ -27,7 +27,7 @@ export default defineConfig({
         },
 
         createHtmlPlugin({
-            minify: true, // Ini yang akan melakukan minifikasi saat build
+            minify: true
         }),
     ],
 
@@ -39,12 +39,12 @@ export default defineConfig({
 
     build: {
         outDir: 'dist',
-        assetsDir: 'assets', // Direktori untuk aset di dalam outDir
-        sourcemap: 'hidden', // 'inline', 'hidden', atau false
-        minify: 'terser', // atau 'esbuild' (lebih cepat, tapi kurang optimal)
+        assetsDir: 'assets',
+        sourcemap: 'hidden',
+        minify: 'terser',
         terserOptions: {
             compress: {
-                drop_console: true, // Hapus console.log di produksi
+                drop_console: true,
                 drop_debugger: true,
             },
         },

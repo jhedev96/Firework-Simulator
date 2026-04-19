@@ -1,3 +1,5 @@
+import '@/styles/reset.css';
+import '@/styles/font.css';
 import '@/styles/main.css';
 import { Constants } from '@/utils/Constants';
 import { FireworkApp } from '@/core/FireworkApp';

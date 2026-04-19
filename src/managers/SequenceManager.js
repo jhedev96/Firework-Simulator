@@ -33,22 +33,14 @@ export class SequenceManager {
     }
 
     seqRandomShell() {
-        const {
-            size,
-            x,
-            height
-        } = this.getRandomShellSize();
+        const { size, x, height } = this.getRandomShellSize();
         const shell = new Shell(this.app.shellFactory.shellFromConfig(size), this.app);
         shell.launch(x, height);
         return 900 + Math.random() * 600 + (shell.fallingLeaves ? 4600 : shell.starLife);
     }
 
     seqRandomFastShell() {
-        const {
-            size,
-            x,
-            height
-        } = this.getRandomShellSize();
+        const { size, x, height } = this.getRandomShellSize();
         const shell = new Shell(ShellFactory.randomFastShell()(size, this.app), this.app);
         shell.launch(x, height);
         return 900 + Math.random() * 600 + shell.starLife;
@@ -68,7 +60,6 @@ export class SequenceManager {
         const shellType = ShellFactory.randomFastShell();
         const baseSize = this.app.stateManager.shellSize;
         const smallSize = Math.max(0, baseSize - 1.25);
-
         new Shell(shellType(baseSize, this.app), this.app).launch(0.5 + Math.random() * 0.08 - 0.04, 0.7);
         setTimeout(() => new Shell(shellType(smallSize, this.app), this.app).launch(0.2 + Math.random() * 0.08 - 0.04, 0.1), 1000 + Math.random() * 400);
         setTimeout(() => new Shell(shellType(smallSize, this.app), this.app).launch(0.8 + Math.random() * 0.08 - 0.04, 0.1), 1000 + Math.random() * 400);

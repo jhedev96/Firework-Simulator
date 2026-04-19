@@ -277,10 +277,8 @@ export class ShellFactory {
         const w = this.app.renderer.mainStage.width;
         const h = this.app.renderer.mainStage.height;
         const edge = 0.18;
-
         const hPos = event ? event.x / w : (1 - edge * 2) * Math.random() + edge;
         const vPos = event ? 1 - event.y / h : Math.random() * 0.75;
-
         shell.launch(hPos, vPos);
     }
 }

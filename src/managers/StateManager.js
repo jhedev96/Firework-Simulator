@@ -18,6 +18,8 @@ export class StateManager {
                 quality: String(Constants.IS_HIGH_END_DEVICE ? Constants.QUALITY_HIGH : Constants.QUALITY_NORMAL),
                 shell: 'Random',
                 size: Constants.IS_DESKTOP ? '3' : Constants.IS_HEADER ? '1.2' : '2',
+                wordShell: true,
+                customWords: "HAPPY,BOOM,WOW",
                 autoLaunch: true,
                 finale: false,
                 skyLighting: Constants.SKY_LIGHT_NORMAL + '',
@@ -29,7 +31,7 @@ export class StateManager {
                     count: 0, // total yang udah diputar
                     max: Utils.randomInt(35, 1000), // batas maksimal whistle
                     lastTime: 0, // terakhir main
-                    coolDown: 20000, // jeda minimal 2 detik
+                    coolDown: 2000, // jeda minimal 2 detik
                     probChance: Utils.randomFloat(0.3, 0.6, 1000), // peluang awal 30%-60%
                     reset: true, // flag reset
                     resetTime: 60000, // reset tiap 1 menit (60000 ms)
@@ -37,7 +39,6 @@ export class StateManager {
                 },
             }
         };
-
         if (!Constants.IS_HEADER) this.load();
     }
 
@@ -58,48 +59,32 @@ export class StateManager {
             }
         };
         this.state = Object.assign({}, this.state, nextState);
-        if (nextState.config) {
-            this.state.config = Object.assign({}, prevState.config, nextState.config);
-        }
+        if (nextState.config) this.state.config = Object.assign({}, prevState.config, nextState.config);
         this._dispatch(prevState);
         this.persist();
     }
 
     load() {
-        const serializedData = localStorage.getItem('cm_fireworks_data');
-        if (serializedData) {
+        const sd = localStorage.getItem('cm_fireworks_data_v3');
+        if (sd) {
             try {
                 const {
-                    schemaVersion,
                     data
-                } = JSON.parse(serializedData);
-                const config = this.state.config;
-                if (schemaVersion === '1.1' || schemaVersion === '1.2') {
-                    config.quality = data.quality;
-                    config.size = data.size;
-                    config.skyLighting = data.skyLighting;
-                    if (schemaVersion === '1.2') config.scaleFactor = data.scaleFactor;
-                }
-            } catch (e) {
-                console.error('Failed parsing saved config', e);
-            }
+                } = JSON.parse(sd);
+                this.state.config = {
+                    ...this.state.config,
+                    ...data
+                };
+            } catch (e) {}
         }
     }
 
     persist() {
-        const config = this.state.config;
-        localStorage.setItem('cm_fireworks_data', JSON.stringify({
-            schemaVersion: '1.2',
-            data: {
-                quality: config.quality,
-                size: config.size,
-                skyLighting: config.skyLighting,
-                scaleFactor: config.scaleFactor
-            }
+        localStorage.setItem('cm_fireworks_data_v3', JSON.stringify({
+            data: this.state.config
         }));
     }
 
-    // Selectors
     get isRunning() {
         return !this.state.paused && !this.state.menuOpen;
     }
