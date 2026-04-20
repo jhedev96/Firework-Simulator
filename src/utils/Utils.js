@@ -19,6 +19,36 @@ export class Utils {
 
     static lastColor = null;
     static wordCache = {};
+    static MAX_CACHE_SIZE = 20;
+    
+    // Reusable off-screen canvas for text rendering
+    static textCanvas = null;
+    static textCtx = null;
+
+    // Initialize reusable canvas
+    static initTextCanvas() {
+        if (!Utils.textCanvas) {
+            Utils.textCanvas = document.createElement("canvas");
+            Utils.textCtx = Utils.textCanvas.getContext("2d", { willReadFrequently: true });
+        }
+    }
+
+    // LRU Cache helper with size limit
+    static _updateCache(key) {
+        const cache = Utils.wordCache;
+        // Move to end (most recently used)
+        if (cache[key]) {
+            const entry = cache[key];
+            delete cache[key];
+            cache[key] = entry;
+            return;
+        }
+        // Evict oldest if at capacity
+        const keys = Object.keys(cache);
+        if (keys.length >= Utils.MAX_CACHE_SIZE) {
+            delete cache[keys[0]];
+        }
+    }
 
     static randomColorSimple() {
         return Utils.colorCodes[Math.random() * Utils.colorCodes.length | 0];
@@ -86,13 +116,19 @@ export class Utils {
     // Optimasi Text to Dot Array pakai Memoization (Cache)
     static getTextDots(text) {
         if (!text) return null;
-        if (Utils.wordCache[text]) return Utils.wordCache[text];
+        if (Utils.wordCache[text]) {
+            Utils._updateCache(text);
+            return Utils.wordCache[text];
+        }
+
+        // Initialize reusable canvas on first use
+        Utils.initTextCanvas();
 
         const density = 3; // Seberapa rapet titik-titiknya
         const fontSizeStr = "80px";
         const fontFamily = "Russo One, sans-serif";
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+        const canvas = Utils.textCanvas;
+        const ctx = Utils.textCtx;
 
         ctx.font = `${fontSizeStr} ${fontFamily}`;
         const width = ctx.measureText(text).width;
@@ -109,6 +145,10 @@ export class Utils {
         ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        
+        // Clear canvas immediately after reading pixel data
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
         const dots = [];
 
         for (let y = 0; y < imageData.height; y += density) {

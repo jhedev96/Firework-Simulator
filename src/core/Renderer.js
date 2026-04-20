@@ -18,7 +18,17 @@ export class Renderer {
         this.targetSkyColor = { r: 0, g: 0, b: 0 };
 
         this.handleResize();
-        window.addEventListener('resize', () => this.handleResize());
+        
+        // Debounced resize handler
+        let resizeTimeout = null;
+        const debouncedResize = () => {
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.handleResize();
+                resizeTimeout = null;
+            }, 150);
+        };
+        window.addEventListener('resize', debouncedResize);
     }
 
     handleResize() {
@@ -41,31 +51,45 @@ export class Renderer {
     }
 
     colorSky(speed) {
+        // Throttle: only recalculate target colors every 3 frames
+        this._skyFrameCount = (this._skyFrameCount || 0) + 1;
+        
         const maxSkySaturation = +this.app.stateManager.state.config.skyLighting * 15;
-        let totalStarCount = 0;
-        this.targetSkyColor.r = this.targetSkyColor.g = this.targetSkyColor.b = 0;
+        
+        // Only recalculate target sky color periodically
+        if (this._skyFrameCount % 3 === 0) {
+            let totalStarCount = 0;
+            this.targetSkyColor.r = this.targetSkyColor.g = this.targetSkyColor.b = 0;
 
-        Utils.colorCodes.forEach(color => {
-            const count = this.app.particles.stars[color].length;
-            totalStarCount += count;
-            this.targetSkyColor.r += Utils.colorTuples[color].r * count;
-            this.targetSkyColor.g += Utils.colorTuples[color].g * count;
-            this.targetSkyColor.b += Utils.colorTuples[color].b * count;
-        });
+            const colorCodes = Utils.colorCodes;
+            const colorTuples = Utils.colorTuples;
+            const stars = this.app.particles.stars;
+            
+            for (let i = 0; i < colorCodes.length; i++) {
+                const color = colorCodes[i];
+                const count = stars[color].length;
+                totalStarCount += count;
+                const tuple = colorTuples[color];
+                this.targetSkyColor.r += tuple.r * count;
+                this.targetSkyColor.g += tuple.g * count;
+                this.targetSkyColor.b += tuple.b * count;
+            }
 
-        const intensity = Math.pow(Math.min(1, totalStarCount / 500), 0.3);
-        const maxColorComponent = Math.max(1, this.targetSkyColor.r, this.targetSkyColor.g, this.targetSkyColor.b);
+            const intensity = Math.pow(Math.min(1, totalStarCount / 500), 0.3);
+            const maxColorComponent = Math.max(1, this.targetSkyColor.r, this.targetSkyColor.g, this.targetSkyColor.b);
 
-        this.targetSkyColor.r = this.targetSkyColor.r / maxColorComponent * maxSkySaturation * intensity;
-        this.targetSkyColor.g = this.targetSkyColor.g / maxColorComponent * maxSkySaturation * intensity;
-        this.targetSkyColor.b = this.targetSkyColor.b / maxColorComponent * maxSkySaturation * intensity;
+            this.targetSkyColor.r = this.targetSkyColor.r / maxColorComponent * maxSkySaturation * intensity;
+            this.targetSkyColor.g = this.targetSkyColor.g / maxColorComponent * maxSkySaturation * intensity;
+            this.targetSkyColor.b = this.targetSkyColor.b / maxColorComponent * maxSkySaturation * intensity;
+        }
 
         const colorChange = 10;
         this.currentSkyColor.r += (this.targetSkyColor.r - this.currentSkyColor.r) / colorChange * speed;
         this.currentSkyColor.g += (this.targetSkyColor.g - this.currentSkyColor.g) / colorChange * speed;
         this.currentSkyColor.b += (this.targetSkyColor.b - this.currentSkyColor.b) / colorChange * speed;
 
-        if (this.app.ui && this.app.ui.nodes.canvasContainer) {
+        // Only update DOM every 2nd frame when there's significant change
+        if (this._skyFrameCount % 2 === 0 && this.app.ui && this.app.ui.nodes.canvasContainer) {
             this.app.ui.nodes.canvasContainer.style.backgroundColor = `rgb(${this.currentSkyColor.r | 0}, ${this.currentSkyColor.g | 0}, ${this.currentSkyColor.b | 0})`;
         }
     }
@@ -99,43 +123,57 @@ export class Renderer {
             this.app.particles.returnBurstFlash(bf);
         }
 
+        // Draw Stars - Optimized with cached values and reduced context switches
+        const quality = this.app.stateManager.quality;
+        const isHighQuality = quality === Constants.QUALITY_HIGH;
+        const isLowQuality = quality === Constants.QUALITY_LOW;
+        
         trailsCtx.globalCompositeOperation = 'lighten';
-        trailsCtx.lineWidth = this.app.stateManager.quality === Constants.QUALITY_HIGH ? 0.75 : 1;
-        trailsCtx.lineCap = this.app.stateManager.quality === Constants.QUALITY_LOW ? 'square' : 'round';
+        trailsCtx.lineWidth = isHighQuality ? 0.75 : 1;
+        trailsCtx.lineCap = isLowQuality ? 'square' : 'round';
         mainCtx.strokeStyle = '#fff';
         mainCtx.lineWidth = 1;
         mainCtx.beginPath();
 
-        // Draw Stars
-        Utils.colorCodes.forEach(color => {
+        // Draw Stars - batch by color but with optimized path construction
+        const colorCodes = Utils.colorCodes;
+        for (let c = 0; c < colorCodes.length; c++) {
+            const color = colorCodes[c];
             const stars = this.app.particles.stars[color];
+            if (stars.length === 0) continue;
+            
             trailsCtx.strokeStyle = color;
             trailsCtx.beginPath();
-            stars.forEach(star => {
+            for (let s = 0; s < stars.length; s++) {
+                const star = stars[s];
                 if (star.visible) {
                     trailsCtx.moveTo(star.x, star.y);
                     trailsCtx.lineTo(star.prevX, star.prevY);
                     mainCtx.moveTo(star.x, star.y);
                     mainCtx.lineTo(star.x - star.speedX * 1.6, star.y - star.speedY * 1.6);
                 }
-            });
+            }
             trailsCtx.stroke();
-        });
+        }
         mainCtx.stroke();
 
-        // Draw Sparks
+        // Draw Sparks - optimized
         trailsCtx.lineWidth = 0;
         trailsCtx.lineCap = 'butt';
-        Utils.colorCodes.forEach(color => {
+        for (let c = 0; c < colorCodes.length; c++) {
+            const color = colorCodes[c];
             const sparks = this.app.particles.sparks[color];
+            if (sparks.length === 0) continue;
+            
             trailsCtx.strokeStyle = color;
             trailsCtx.beginPath();
-            sparks.forEach(spark => {
+            for (let s = 0; s < sparks.length; s++) {
+                const spark = sparks[s];
                 trailsCtx.moveTo(spark.x, spark.y);
                 trailsCtx.lineTo(spark.prevX, spark.prevY);
-            });
+            }
             trailsCtx.stroke();
-        });
+        }
 
         // Draw Speedbar
         if (this.speedBarOpacity) {

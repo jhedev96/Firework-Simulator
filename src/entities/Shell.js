@@ -172,7 +172,15 @@ export class Shell {
                 const selectedStyle = Math2.randomChoice(wordStyles);
                 let playedWordDeathSound = false; // Flag throttle sound buat crackle
 
-                dotsMap.points.forEach(point => {
+                // Pre-compute all particle data in a single pass (batch processing)
+                const particleDataList = new Array(dotsMap.points.length);
+                const baseStarLife = this.starLife;
+                const cometSpeedX = this.comet?.speedX || 0;
+                const cometSpeedY = this.comet?.speedY || 0;
+
+                for (let i = 0; i < dotsMap.points.length; i++) {
+                    const point = dotsMap.points[i];
+                    
                     // Terapkan matriks rotasi 2D ke titik koordinat teks
                     const rotatedX = point.x * cosA - point.y * sinA;
                     const rotatedY = point.x * sinA + point.y * cosA;
@@ -193,13 +201,25 @@ export class Shell {
                     // Variasi lifespan biar hilangnya satu-satu organik
                     const lifeVariation = Math2.random(-200, 500);
 
+                    particleDataList[i] = {
+                        angle: targetAngle,
+                        velocity: requiredVelocity,
+                        life: baseStarLife + lifeVariation,
+                        speedOffX: cometSpeedX * 0.15,
+                        speedOffY: (cometSpeedY * 0.15 || 0) - 0.4
+                    };
+                }
+
+                // Batch create particles with pre-computed data
+                for (let i = 0; i < particleDataList.length; i++) {
+                    const data = particleDataList[i];
                     const star = this.app.particles.addStar(
                         x, y, wordColor,
-                        targetAngle,
-                        requiredVelocity,
-                        this.starLife + lifeVariation,
-                        (this.comet?.speedX * 0.15) || 0, // Dikit banget pengaruh momentum awal 
-                        (this.comet?.speedY * 0.15 || 0) - 0.4 // Gravitasi kecil di awal
+                        data.angle,
+                        data.velocity,
+                        data.life,
+                        data.speedOffX,
+                        data.speedOffY
                     );
 
                     // Terapkan efek visual berdasarkan 'selectedStyle'
@@ -230,7 +250,7 @@ export class Shell {
                             }
                         };
                     }
-                });
+                }
 
                 this.app.particles.addBurstFlash(x, y, this.spreadSize / 3);
                 this.app.soundManager.playSound('burst', 1.2);

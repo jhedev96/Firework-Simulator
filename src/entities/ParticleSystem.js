@@ -52,10 +52,25 @@ export class ParticleSystem {
 
     returnStar(instance) {
         if (instance.onDeath) instance.onDeath(instance);
+        
+        // Comprehensive reset of all particle properties for pool reuse
         instance.onDeath = null;
         instance.secondColor = null;
         instance.transitionTime = 0;
         instance.colorChanged = false;
+        
+        // Reset word-specific properties
+        instance.strobe = false;
+        instance.strobeFreq = 0;
+        instance.sparkFreq = 0;
+        instance.sparkSpeed = 1;
+        instance.sparkTimer = 0;
+        instance.sparkColor = instance.color;
+        instance.sparkLife = 750;
+        instance.sparkLifeVariation = 0.25;
+        instance.spinAngle = 0;
+        instance.spinRadius = 0;
+        
         this.starPool.push(instance);
     }
 
