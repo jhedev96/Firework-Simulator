@@ -55,13 +55,9 @@ export class Utils {
         const angleDelta = arcLength / count;
         const end = start + arcLength - (angleDelta * 0.5);
         if (end > start) {
-            for (let angle = start; angle < end; angle = angle + angleDelta) {
-                particleFactory(angle + Math.random() * angleDelta * randomness);
-            }
+            for (let angle = start; angle < end; angle = angle + angleDelta) particleFactory(angle + Math.random() * angleDelta * randomness);
         } else {
-            for (let angle = start; angle > end; angle = angle + angleDelta) {
-                particleFactory(angle + Math.random() * angleDelta * randomness);
-            }
+            for (let angle = start; angle > end; angle = angle + angleDelta) particleFactory(angle + Math.random() * angleDelta * randomness);
         }
     }
 
@@ -77,18 +73,16 @@ export class Utils {
             const angleInc = Constants.PI_2 / partsPerFullRing;
             const angleOffset = Math.random() * angleInc + startAngle;
             const maxRandomAngleOffset = angleInc * 0.33;
-            for (let j = 0; j < partsPerArc; j++) {
-                particleFactory(angleInc * j + angleOffset + Math.random() * maxRandomAngleOffset, ringSize);
-            }
+            for (let j = 0; j < partsPerArc; j++) particleFactory(angleInc * j + angleOffset + Math.random() * maxRandomAngleOffset, ringSize);
         }
     }
 
-    // Optimasi Text to Dot Array pakai Memoization (Cache)
+    // Word to Dots with density map
     static getTextDots(text) {
         if (!text) return null;
         if (Utils.wordCache[text]) return Utils.wordCache[text];
 
-        const density = 3; // Seberapa rapet titik-titiknya
+        const density = 3;
         const fontSizeStr = "80px";
         const fontFamily = "Russo One, sans-serif";
         const canvas = document.createElement("canvas");
@@ -105,7 +99,6 @@ export class Utils {
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        // Gambar di titik pusat canvas
         ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -115,7 +108,6 @@ export class Utils {
             for (let x = 0; x < imageData.width; x += density) {
                 const i = (y * imageData.width + x) * 4;
                 if (imageData.data[i + 3] > 128) {
-                    // Normalize (0,0) ke titik pusat biar pas meledak gampang di-rotate
                     dots.push({
                         x: x - canvas.width / 2,
                         y: y - canvas.height / 2
@@ -131,14 +123,5 @@ export class Utils {
         };
         Utils.wordCache[text] = result;
         return result;
-    }
-
-    static randomInt(min, max) {
-        return Math.floor(
-            Math.random() * (max - min + 1) + min
-        );
-    }
-    static randomFloat(min, max, int = 1000) {
-        return Math.random() * (max - min) + min * int;
     }
 }

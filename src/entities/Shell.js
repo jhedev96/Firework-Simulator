@@ -34,8 +34,6 @@ export class Shell {
         const launchVelocity = Math.pow(launchDistance * 0.04, 0.64);
         const color = typeof this.color === 'string' && this.color !== 'random' ? this.color : Constants.COLOR.White;
 
-        const now = Date.now();
-
         const comet = this.comet = this.app.particles.addStar(launchX, launchY, color, Math.PI, launchVelocity * (this.horsetail ? 1.2 : 1), launchVelocity * (this.horsetail ? 100 : 400));
         comet.heavy = true;
         comet.spinRadius = Math2.random(0.32, 0.85);
@@ -57,24 +55,16 @@ export class Shell {
 
         comet.onDeath = c => this.burst(c.x, c.y);
 
-        // cek apakah waktunya reset counter
-        if (this.app.stateManager.whistleSfx.reset) {
-            if (now - this.app.stateManager.whistleSfx.lastReset > this.app.stateManager.whistleSfx.resetTime) {
-                this.app.stateManager.whistleSfx.count = 0;
-                this.app.stateManager.whistleSfx.lastReset = now;
-            }
-        }
-
-        // Hybrid rule: max 5x per periode reset, cooldown 2s, 40% chance
-        if (
-            this.app.stateManager.whistleSfx.count < this.app.stateManager.whistleSfx.max &&
-            (now - this.app.stateManager.whistleSfx.lastTime > this.app.stateManager.whistleSfx.coolDown) &&
-            Math.random() < this.app.stateManager.whistleSfx.probChance
-        ) {
-            this.app.soundManager.playSound('lift');
+        // ────────────────────────────
+        // [REVISI WHISTLE] Visual Wobble + Sound
+        // ────────────────────────────
+        const config = this.app.stateManager.state.config;
+        // 25% chance roket bakal terbang sambil berputar & bunyi siul kalau fiturnya nyala
+        if (config.whistles && Math.random() < 0.25) {
             this.app.soundManager.playSound('whistle');
-            this.app.stateManager.whistleSfx.count++;
-            this.app.stateManager.whistleSfx.lastTime = now;
+            comet.wobble = true;
+            comet.wobbleFreq = Math2.random(15, 30); // Seberapa cepat dia meliuk
+            comet.wobbleAmp = Math2.random(2.5, 14.5); // Seberapa lebar liukannya
         } else {
             this.app.soundManager.playSound('lift');
         }
@@ -142,9 +132,11 @@ export class Shell {
             });
         };
 
-        // ─── DYNAMIC PHYSICS & SYNC DISAPPEARANCE ─────────────────────────────────────────
+        // ───────────────────────────────────────
+        // [REVISI WORD SHELL] ULTRA REALISTIC 3D & JITTER
+        // ───────────────────────────────────────
         const isWordEnabled = this.app.stateManager.state.config.wordShell && !this.disableWord;
-        const triggerWord = isWordEnabled && Math.random() < 0.35; // 35% chance biar makin sering muncul
+        const triggerWord = isWordEnabled && Math.random() < 0.35;
 
         if (triggerWord) {
             const rawWords = this.app.stateManager.state.config.customWords || "BOOM";
@@ -156,53 +148,52 @@ export class Shell {
                 const wordColor = Utils.randomColor({
                     limitWhite: true
                 });
-                const dragFactor = 0.98; // Konstanta fisika sistem
+                const dragFactor = 0.98;
                 const explosionPowerMultiplier = (this.spreadSize / 130);
 
-                // Dynamic Rotation
-                // Bikin kemiringan acak dari -30 derajat sampai +30 derajat, atau lurus
-                const isTilted = Math.random() < 0.7; // 70% peluang miring
+                // 1. Dynamic Rotation (Tilt)
+                const isTilted = Math.random() < 0.7;
                 const tiltAngle = isTilted ? Math2.random(-0.5, 0.5) : 0;
                 const cosA = Math.cos(tiltAngle);
                 const sinA = Math.sin(tiltAngle);
 
-                // Sync Disappearance (Random Style)
-                // Biar pas ngilang nggak monoton, kita acak gaya hilangnya
-                const wordStyles = ['crackle', 'strobe', 'floral', 'glitter'];
+                // 2. 3D Perspective Squash (Bikin tulisan nampak menghadap serong)
+                const squashX = Math.random() < 0.4 ? Math2.random(0.6, 1) : 1;
+                const squashY = Math.random() < 0.4 ? Math2.random(0.6, 1) : 1;
+
+                // 3. Sync Disappearance Style
+                const wordStyles = ['crackle', 'strobe', 'floral', 'glitter', 'none'];
                 const selectedStyle = Math2.randomChoice(wordStyles);
-                let playedWordDeathSound = false; // Flag throttle sound buat crackle
+                let playedWordDeathSound = false;
 
                 dotsMap.points.forEach(point => {
-                    // Terapkan matriks rotasi 2D ke titik koordinat teks
-                    const rotatedX = point.x * cosA - point.y * sinA;
-                    const rotatedY = point.x * sinA + point.y * cosA;
+                    // Terapkan matriks rotasi + 3D squash
+                    const rotatedX = (point.x * cosA - point.y * sinA) * squashX;
+                    const rotatedY = (point.x * sinA + point.y * cosA) * squashY;
 
-                    // Abstrak & Jitter 
-                    // Bikin posisi target sedikit acak biar nggak kaku kayak kotak
-                    const targetX = rotatedX + Math2.random(-4, 4);
-                    const targetY = rotatedY + Math2.random(-4, 4);
+                    // 4. JITTER! Acak titik sedikit biar nampak organik kayak bubuk mesiu pecah, gak kotak sempurna.
+                    const jitterX = Math2.random(-5, 5);
+                    const jitterY = Math2.random(-5, 5);
+                    const targetX = rotatedX + jitterX;
+                    const targetY = rotatedY + jitterY;
 
                     const targetDistance = Math.sqrt(targetX * targetX + targetY * targetY);
-
-                    // Pakai Math.atan2(dx, dy) buat sistem koordinat canvas (X = sin, Y = cos)
                     const targetAngle = Math.atan2(targetX, targetY);
-
-                    // Hitung seberapa kuat harus dilempar biar nyampe di titik target
                     const requiredVelocity = targetDistance * (1 - dragFactor) * explosionPowerMultiplier;
 
-                    // Variasi lifespan biar hilangnya satu-satu organik
-                    const lifeVariation = Math2.random(-200, 500);
+                    // Variasi lifespan organik
+                    const lifeVariation = Math2.random(-300, 400);
 
                     const star = this.app.particles.addStar(
                         x, y, wordColor,
                         targetAngle,
                         requiredVelocity,
                         this.starLife + lifeVariation,
-                        (this.comet?.speedX * 0.15) || 0, // Dikit banget pengaruh momentum awal 
-                        (this.comet?.speedY * 0.15 || 0) - 0.4 // Gravitasi kecil di awal
+                        (this.comet?.speedX * 0.15) || 0, // Momentum bawaan komet (sedikit horizontal)
+                        (this.comet?.speedY * 0.15 || 0) - 0.4 // Gravitasi kecil di awal pas pecah
                     );
 
-                    // Terapkan efek visual berdasarkan 'selectedStyle'
+                    // Terapkan efek visual
                     if (selectedStyle === 'strobe') {
                         star.strobe = true;
                         star.strobeFreq = Math.random() * 20 + 30;
@@ -214,8 +205,7 @@ export class Shell {
                         star.sparkColor = Constants.COLOR.Gold;
                     } else if (selectedStyle === 'crackle') {
                         star.onDeath = (s) => {
-                            // Cuma 12% titik yang meledak biar hp nggak hang & suara nggak nabrak
-                            if (Math.random() < 0.12) {
+                            if (Math.random() < 0.15) { // 15% meledak
                                 if (!playedWordDeathSound) {
                                     this.app.soundManager.playSound('crackleSmall');
                                     playedWordDeathSound = true;
@@ -225,19 +215,17 @@ export class Shell {
                         };
                     } else if (selectedStyle === 'floral') {
                         star.onDeath = (s) => {
-                            if (Math.random() < 0.08) { // Cuma 8% titik yg jadi bunga
-                                ShellFactory.floralEffect(s, this.app);
-                            }
+                            if (Math.random() < 0.08) ShellFactory.floralEffect(s, this.app);
                         };
                     }
                 });
 
                 this.app.particles.addBurstFlash(x, y, this.spreadSize / 3);
                 this.app.soundManager.playSound('burst', 1.2);
-                return; // Selesai ngerender teks, nggak usah ngerender bintang normal
+                return; // Done
             }
         }
-        // ──────────────────────────────────────────────
+        // ──────────────────────────────────────────────────────────
 
         if (typeof this.color === 'string') {
             color = this.color === 'random' ? null : this.color;

@@ -18,13 +18,16 @@ Originally inspired by and based on [Caleb Miller's v2 CodePen](https://codepen.
 
 ## 🚀 Version Changelog & New Features
 
-### [v3.0] - Core Additions
-* **Dynamic Word Shell:** Introduced the ability to spawn custom text fireworks dynamically.
+### [v4.0] - Immersion 🆕
+* **Settings Redesign:** Cleaned up and categorized the UI options.
+* **Ultra Realistic Word Shell:** Text fireworks now feature 3D depth, rotation, and organic particle scattering.
+* **Wobble Physics:** Whistling rockets now utilize Lissajous curve physics and thrust decay for chaotic, spiraling ascents.
 
-### [v2.5] - Foundation
+### [v2.5 & v3.0] - Foundation & Core Additions
 * **OOP Refactor:** Completely rewritten from procedural code into clean, modular ES6 Classes.
 * **i18n Support:** Added multi-language support (English & Indonesian) with automatic system detection.
 * **Audio Engineering:** Added distinct sound effects for rocket lifts and whistling.
+* **Dynamic Word Shell:** Introduced the ability to spawn custom text fireworks dynamically.
 
 ## 🎮 Desktop Keyboard Shortcuts
 * **P** - Pause the simulation.
@@ -34,12 +37,12 @@ Originally inspired by and based on [Caleb Miller's v2 CodePen](https://codepen.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/jhedev96/Firework-Simulator.git
+   git clone https://github.com/jhedev96/firework-simulator.git
    ```
 
  * Navigate to the directory & build with NPM/PNPM:
    ```bash
-   cd Firework-Simulator
+   cd firework-simulator
    
    npm install
    

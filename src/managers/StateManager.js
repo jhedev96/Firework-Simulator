@@ -20,23 +20,13 @@ export class StateManager {
                 size: Constants.IS_DESKTOP ? '3' : Constants.IS_HEADER ? '1.2' : '2',
                 wordShell: true,
                 customWords: "HAPPY,BOOM,WOW",
+                whistles: true, // [REVISI WHISTLE] Jadi simple boolean, logic di-handle class
                 autoLaunch: true,
                 finale: false,
                 skyLighting: Constants.SKY_LIGHT_NORMAL + '',
                 hideControls: Constants.IS_HEADER,
                 longExposure: false,
                 scaleFactor: Constants.IS_MOBILE ? 0.9 : Constants.IS_HEADER ? 0.75 : 1,
-                // whistle state
-                whistleSfx: {
-                    count: 0, // total yang udah diputar
-                    max: Utils.randomInt(35, 1000), // batas maksimal whistle
-                    lastTime: 0, // terakhir main
-                    coolDown: 2000, // jeda minimal 2 detik
-                    probChance: Utils.randomFloat(0.3, 0.6, 1000), // peluang awal 30%-60%
-                    reset: true, // flag reset
-                    resetTime: 60000, // reset tiap 1 menit (60000 ms)
-                    lastReset: Date.now()
-                },
             }
         };
         if (!Constants.IS_HEADER) this.load();
@@ -65,7 +55,7 @@ export class StateManager {
     }
 
     load() {
-        const sd = localStorage.getItem('cm_fireworks_data_v3');
+        const sd = localStorage.getItem('cm_fireworks_v4');
         if (sd) {
             try {
                 const {
@@ -80,7 +70,7 @@ export class StateManager {
     }
 
     persist() {
-        localStorage.setItem('cm_fireworks_data_v3', JSON.stringify({
+        localStorage.setItem('cm_fireworks_v4', JSON.stringify({
             data: this.state.config
         }));
     }
@@ -102,8 +92,5 @@ export class StateManager {
     }
     get scaleFactor() {
         return this.state.config.scaleFactor;
-    }
-    get whistleSfx() {
-        return this.state.config.whistleSfx;
     }
 }

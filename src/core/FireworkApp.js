@@ -16,7 +16,7 @@ import { SequenceManager } from '@/managers/SequenceManager';
 export class FireworkApp {
     constructor() {
         this.simSpeed = 1;
-        this.i18n = new I18nManager(); // Init micro-translator
+        this.i18n = new I18nManager();
         this.stateManager = new StateManager();
         this.soundManager = new SoundManager(this.stateManager);
         this.ui = new UIManager(this);
@@ -32,9 +32,7 @@ export class FireworkApp {
                 else this.soundManager.pauseAll();
             }
             if (+state.config.skyLighting === Constants.SKY_LIGHT_NONE) {
-                if (this.ui.nodes.canvasContainer) {
-                    this.ui.nodes.canvasContainer.style.backgroundColor = '#000';
-                }
+                if (this.ui.nodes.canvasContainer) this.ui.nodes.canvasContainer.style.backgroundColor = '#000';
             }
         });
     }
@@ -82,6 +80,12 @@ export class FireworkApp {
                     star.prevY = star.y;
                     star.x += star.speedX * speed;
                     star.y += star.speedY * speed;
+
+                    // [REVISI WHISTLE] Wobble effect physics! (Bikin komet terbang meliuk-liuk)
+                    if (star.wobble) {
+                        // Goyang ke kiri-kanan pakai Sine wave
+                        star.x += Math.sin(star.life / star.wobbleFreq) * star.wobbleAmp * speed;
+                    }
 
                     if (!star.heavy) {
                         star.speedX *= starDrag;

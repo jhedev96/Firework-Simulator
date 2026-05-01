@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Firework Simulator v3</title>
+    <title>Firework Simulator v4</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="description" content="An advanced, highly realistic, and feature-rich fireworks simulation built with HTML5 Canvas and JavaScript." />
-    <meta name="keywords" content="firework, firework-simulator, kembang-api" />
+    <meta name="keywords" content="firework, firework-simulator, kembang-api, hanabi" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#000000" />
@@ -79,11 +79,31 @@
                     <div class="menu__header" data-i18n="ui.settings">Settings</div>
                     <div class="menu__subheader" data-i18n="ui.subheader">For more info, click any label.</div>
                     <form>
+                        <!-- CATEGORY: GENERAL -->
+                        <div class="menu-category" data-i18n="ui.catGeneral">🌐 General & Display</div>
                         <div class="form-option form-option--select">
                             <label class="language-label" data-i18n="ui.language">Language</label>
                             <select class="app-language"></select>
                         </div>
+                        <div class="form-option form-option--select">
+                            <label class="quality-ui-label" data-i18n="ui.quality">Quality</label>
+                            <select class="quality-ui"></select>
+                        </div>
+                        <div class="form-option form-option--select">
+                            <label class="scaleFactor-label" data-i18n="ui.scale">Scale</label>
+                            <select class="scaleFactor"></select>
+                        </div>
+                        <div class="form-option form-option--checkbox">
+                            <label class="hide-controls-label" data-i18n="ui.hideControls">Hide Controls</label>
+                            <input class="hide-controls" type="checkbox" />
+                        </div>
+                        <div class="form-option form-option--checkbox form-option--fullscreen">
+                            <label class="fullscreen-label" data-i18n="ui.fullscreen">Fullscreen</label>
+                            <input class="fullscreen" type="checkbox" />
+                        </div>
 
+                        <!-- CATEGORY: FIREWORKS -->
+                        <div class="menu-category" data-i18n="ui.catFirework">🎆 Firework Settings</div>
                         <div class="form-option form-option--select">
                             <label class="shell-type-label" data-i18n="ui.shellType">Shell Type</label>
                             <select class="shell-type"></select>
@@ -92,19 +112,10 @@
                             <label class="shell-size-label" data-i18n="ui.shellSize">Shell Size</label>
                             <select class="shell-size"></select>
                         </div>
-                        <div class="form-option form-option--select">
-                            <label class="quality-ui-label" data-i18n="ui.quality">Quality</label>
-                            <select class="quality-ui"></select>
+                        <div class="form-option form-option--checkbox">
+                            <label class="whistle-shell-label" data-i18n="ui.whistleShell">Whistle Effect</label>
+                            <input class="whistle-shell" type="checkbox" />
                         </div>
-                        <div class="form-option form-option--select">
-                            <label class="sky-lighting-label" data-i18n="ui.skyLighting">Sky Lighting</label>
-                            <select class="sky-lighting"></select>
-                        </div>
-                        <div class="form-option form-option--select">
-                            <label class="scaleFactor-label" data-i18n="ui.scale">Scale</label>
-                            <select class="scaleFactor"></select>
-                        </div>
-
                         <div class="form-option form-option--checkbox">
                             <label class="word-shell-label" data-i18n="ui.wordShell">Word Firework</label>
                             <input class="word-shell" type="checkbox" />
@@ -114,6 +125,8 @@
                             <input class="word-text" type="text" placeholder="BOOM,WOW" />
                         </div>
 
+                        <!-- CATEGORY: SIMULATION -->
+                        <div class="menu-category" data-i18n="ui.catSim">⚙️ Simulation Mode</div>
                         <div class="form-option form-option--checkbox">
                             <label class="auto-launch-label" data-i18n="ui.autoFire">Auto Fire</label>
                             <input class="auto-launch" type="checkbox" />
@@ -122,13 +135,9 @@
                             <label class="finale-mode-label" data-i18n="ui.finaleMode">Finale Mode</label>
                             <input class="finale-mode" type="checkbox" />
                         </div>
-                        <div class="form-option form-option--checkbox">
-                            <label class="hide-controls-label" data-i18n="ui.hideControls">Hide Controls</label>
-                            <input class="hide-controls" type="checkbox" />
-                        </div>
-                        <div class="form-option form-option--checkbox form-option--fullscreen">
-                            <label class="fullscreen-label" data-i18n="ui.fullscreen">Fullscreen</label>
-                            <input class="fullscreen" type="checkbox" />
+                        <div class="form-option form-option--select">
+                            <label class="sky-lighting-label" data-i18n="ui.skyLighting">Sky Lighting</label>
+                            <select class="sky-lighting"></select>
                         </div>
                         <div class="form-option form-option--checkbox">
                             <label class="long-exposure-label" data-i18n="ui.openShutter">Open Shutter</label>

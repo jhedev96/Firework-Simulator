@@ -10,7 +10,6 @@ export class ParticleSystem {
         this.stars = this.createCollection();
         this.sparks = this.createCollection();
         this.burstFlashes = [];
-
         this.starPool = [];
         this.sparkPool = [];
         this.flashPool = [];
@@ -45,6 +44,11 @@ export class ParticleSystem {
         instance.sparkLife = 750;
         instance.sparkLifeVariation = 0.25;
         instance.strobe = false;
+
+        // [REVISI WHISTLE] Tambahin parameter wobble
+        instance.wobble = false;
+        instance.wobbleFreq = 0;
+        instance.wobbleAmp = 0;
 
         this.stars[color].push(instance);
         return instance;
