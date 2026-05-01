@@ -245,6 +245,7 @@ export class ShellFactory {
     static fallingLeavesEffect(star, app) {
         Utils.createBurst(7, (angle, speedMult) => {
             const newStar = app.particles.addStar(star.x, star.y, Constants.INVISIBLE, angle, speedMult * 2.4, 2400 + Math.random() * 600, star.speedX, star.speedY);
+
             Object.assign(newStar, {
                 sparkColor: Constants.COLOR.Gold,
                 sparkFreq: 144 / app.stateManager.quality,
@@ -253,6 +254,7 @@ export class ShellFactory {
                 sparkLifeVariation: 3.2
             });
         });
+
         app.particles.addBurstFlash(star.x, star.y, 46);
         app.soundManager.playSound('burstSmall');
     }

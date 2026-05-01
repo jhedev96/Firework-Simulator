@@ -25,6 +25,7 @@ export class SequenceManager {
         const height = maxVariance === 0 ? Math.random() : 1 - (variance / maxVariance);
         const centerOffset = Math.random() * (1 - height * 0.65) * 0.5;
         const x = Math.random() < 0.5 ? 0.5 - centerOffset : 0.5 + centerOffset;
+
         return {
             size,
             x: (1 - 0.36) * x + 0.18,
@@ -33,16 +34,26 @@ export class SequenceManager {
     }
 
     seqRandomShell() {
-        const { size, x, height } = this.getRandomShellSize();
+        const {
+            size,
+            x,
+            height
+        } = this.getRandomShellSize();
         const shell = new Shell(this.app.shellFactory.shellFromConfig(size), this.app);
         shell.launch(x, height);
+
         return 900 + Math.random() * 600 + (shell.fallingLeaves ? 4600 : shell.starLife);
     }
 
     seqRandomFastShell() {
-        const { size, x, height } = this.getRandomShellSize();
+        const {
+            size,
+            x,
+            height
+        } = this.getRandomShellSize();
         const shell = new Shell(ShellFactory.randomFastShell()(size, this.app), this.app);
         shell.launch(x, height);
+
         return 900 + Math.random() * 600 + shell.starLife;
     }
 
@@ -52,7 +63,9 @@ export class SequenceManager {
         const shell1 = new Shell(this.app.shellFactory.shellFromConfig(s1.size), this.app);
         const shell2 = new Shell(this.app.shellFactory.shellFromConfig(s2.size), this.app);
         shell1.launch(0.3 + Math.random() * 0.2 - 0.1, s1.height);
+
         setTimeout(() => shell2.launch(0.7 + Math.random() * 0.2 - 0.1, s2.height), 100);
+
         return 900 + Math.random() * 600 + Math.max(shell1.starLife, shell2.starLife) + (shell1.fallingLeaves || shell2.fallingLeaves ? 4600 : 0);
     }
 
@@ -61,8 +74,10 @@ export class SequenceManager {
         const baseSize = this.app.stateManager.shellSize;
         const smallSize = Math.max(0, baseSize - 1.25);
         new Shell(shellType(baseSize, this.app), this.app).launch(0.5 + Math.random() * 0.08 - 0.04, 0.7);
+
         setTimeout(() => new Shell(shellType(smallSize, this.app), this.app).launch(0.2 + Math.random() * 0.08 - 0.04, 0.1), 1000 + Math.random() * 400);
         setTimeout(() => new Shell(shellType(smallSize, this.app), this.app).launch(0.8 + Math.random() * 0.08 - 0.04, 0.1), 1000 + Math.random() * 400);
+
         return 4000;
     }
 
@@ -79,6 +94,7 @@ export class SequenceManager {
 
         let count = 0,
             delay = 0;
+
         while (count <= barrageCountHalf) {
             if (count === barrageCountHalf) {
                 setTimeout(() => launchShell(0.5, true), delay);
@@ -90,6 +106,7 @@ export class SequenceManager {
             count++;
             delay += 200;
         }
+
         return 3400 + barrageCountHalf * 250;
     }
 
@@ -107,6 +124,7 @@ export class SequenceManager {
 
         let count = 0,
             delay = 0;
+
         while (count < barrageCount) {
             if (count === 0) {
                 launchShell(0.5, false);
@@ -120,6 +138,7 @@ export class SequenceManager {
             }
             delay += 200;
         }
+
         return 3400 + barrageCount * 120;
     }
 
@@ -146,12 +165,14 @@ export class SequenceManager {
         if (rand < 0.1) return this.seqPyramid();
         if (rand < 0.6 && !Constants.IS_HEADER) return this.seqRandomShell();
         if (rand < 0.8) return this.seqTwoRandom();
+
         return this.seqTriple();
     }
 
     update(timeStep) {
         if (!this.app.stateManager.state.config.autoLaunch) return;
         this.autoLaunchTime -= timeStep;
+
         if (this.autoLaunchTime <= 0) {
             this.autoLaunchTime = this.startSequence() * 1.25;
         }

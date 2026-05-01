@@ -9,8 +9,7 @@ export class Constants {
     static IS_HIGH_END_DEVICE = (() => {
         const hwConcurrency = navigator.hardwareConcurrency;
         if (!hwConcurrency) return false;
-        const minCount = window.innerWidth <= 1024 ? 4 : 8;
-        return hwConcurrency >= minCount;
+        return hwConcurrency >= (window.innerWidth <= 1024 ? 4 : 8);
     })();
 
     static MAX_WIDTH = 7680;
@@ -87,6 +86,7 @@ export class Constants {
         '.scaleFactor-label': 'scaleFactor',
         '.word-shell-label': 'wordShell',
         '.word-text-label': 'wordText',
+        '.whistle-shell-label': 'whistleShell',
         '.auto-launch-label': 'autoLaunch',
         '.finale-mode-label': 'finaleMode',
         '.hide-controls-label': 'hideControls',

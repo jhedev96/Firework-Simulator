@@ -10,6 +10,9 @@ export class I18nData {
                 lighting: "Lighting Fuses",
                 settings: "Settings",
                 subheader: "For more info, click any label.",
+                catGeneral: "🌐 General & Display",
+                catFirework: "🎆 Firework Settings",
+                catSim: "⚙️ Simulation Mode",
                 language: "Language",
                 shellType: "Shell Type",
                 shellSize: "Shell Size",
@@ -18,6 +21,7 @@ export class I18nData {
                 scale: "Scale",
                 wordShell: "Word Firework",
                 wordText: "Custom Words",
+                whistleShell: "Whistle Effect",
                 autoFire: "Auto Fire",
                 finaleMode: "Finale Mode",
                 hideControls: "Hide Controls",
@@ -72,7 +76,11 @@ export class I18nData {
                 },
                 wordText: {
                     h: "Custom Words",
-                    b: "Comma-separated list of words to display when 'Word Firework' is enabled. Keep words short for best results (e.g. BOOM, WOW, 2026)."
+                    b: "Comma-separated list of words to display when 'Word Firework' is enabled. Keep words short for best results (e.g. BOOM, WOW)."
+                },
+                whistleShell: {
+                    h: "Whistle Effect",
+                    b: "Randomly makes a firework rocket wiggle and scream (whistle) as it ascends!"
                 },
                 autoLaunch: {
                     h: "Auto Fire",
@@ -103,6 +111,9 @@ export class I18nData {
                 lighting: "Menyalakan Sumbu",
                 settings: "Pengaturan",
                 subheader: "Klik label mana saja untuk info lebih lanjut.",
+                catGeneral: "🌐 Umum & Tampilan",
+                catFirework: "🎆 Seting Kembang Api",
+                catSim: "⚙️ Mode Simulasi",
                 language: "Bahasa",
                 shellType: "Tipe Kembang Api",
                 shellSize: "Ukuran Kembang Api",
@@ -111,6 +122,7 @@ export class I18nData {
                 scale: "Skala Tampilan",
                 wordShell: "Kembang Api Teks",
                 wordText: "Kata Kustom",
+                whistleShell: "Efek Roket Siul",
                 autoFire: "Tembak Otomatis",
                 finaleMode: "Mode Finale",
                 hideControls: "Sembunyikan Tombol",
@@ -167,6 +179,10 @@ export class I18nData {
                     h: "Kata Kustom",
                     b: "Daftar kata yang mau ditampilin (pisahin pakai koma). Biar cakep dan jelas dibaca, usahain katanya pendek-pendek aja (misal: BOOM, WOW, MANTAP)."
                 },
+                whistleShell: {
+                    h: "Efek Roket Siul",
+                    b: "Bikin roket terbang meliuk-liuk (wobble) sambil ngeluarin suara siulan khas kembang api meluncur!"
+                },
                 autoLaunch: {
                     h: "Tembak Otomatis",
                     b: "Otomatis nembakin kembang api tanpa henti. Tinggal duduk manis dan nikmatin aja, atau matiin buat kontrol manual."
@@ -188,7 +204,7 @@ export class I18nData {
                     b: "Efek eksperimental yang ninggalin jejak cahaya panjang, mirip gaya foto 'Long Exposure' pakai kamera."
                 }
             }
-        },
+        }
     };
 }
 
@@ -206,12 +222,10 @@ export class I18nManager {
         this.selectedSetting = saved || 'auto';
         this.currentLang = this.selectedSetting === 'auto' ? this.detectSystemLang() : this.selectedSetting;
     }
-
     detectSystemLang() {
         const sysLang = navigator.language.split('-')[0].toLowerCase();
         return this.supportedLangs.includes(sysLang) ? sysLang : this.defaultLang;
     }
-
     setLanguage(setting) {
         this.selectedSetting = setting;
         try {
@@ -220,7 +234,6 @@ export class I18nManager {
         this.currentLang = setting === 'auto' ? this.detectSystemLang() : setting;
         this.translateDOM();
     }
-
     t(key) {
         if (!key) return '';
         const keys = key.split('.');
@@ -238,7 +251,6 @@ export class I18nManager {
         }
         return value || key;
     }
-
     translateDOM() {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             el.innerHTML = this.t(el.getAttribute('data-i18n'));

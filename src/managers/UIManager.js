@@ -27,6 +27,7 @@ export class UIManager {
             scaleFactor: document.querySelector('.scaleFactor'),
             wordShell: document.querySelector('.word-shell'),
             wordText: document.querySelector('.word-text'),
+            whistleShell: document.querySelector('.whistle-shell'),
             autoLaunch: document.querySelector('.auto-launch'),
             finaleMode: document.querySelector('.finale-mode'),
             finaleModeFormOption: document.querySelector('.form-option--finale-mode'),
@@ -136,6 +137,7 @@ export class UIManager {
                     size: this.nodes.shellSize.value,
                     wordShell: this.nodes.wordShell.checked,
                     customWords: this.nodes.wordText.value || "BOOM,WOW",
+                    whistles: this.nodes.whistleShell.checked,
                     autoLaunch: this.nodes.autoLaunch.checked,
                     finale: this.nodes.finaleMode.checked,
                     skyLighting: this.nodes.skyLighting.value,
@@ -150,7 +152,7 @@ export class UIManager {
             if (this.nodes[key]) this.nodes[key].addEventListener('input', updateConfig);
         });
 
-        ['wordShell', 'autoLaunch', 'finaleMode', 'longExposure', 'hideControls'].forEach(key => {
+        ['wordShell', 'whistleShell', 'autoLaunch', 'finaleMode', 'longExposure', 'hideControls'].forEach(key => {
             if (this.nodes[key]) this.nodes[key].addEventListener('click', () => setTimeout(updateConfig, 0));
         });
 
@@ -227,6 +229,7 @@ export class UIManager {
         this.nodes.shellSize.value = state.config.size;
         this.nodes.wordShell.checked = state.config.wordShell;
         this.nodes.wordText.value = state.config.customWords;
+        this.nodes.whistleShell.checked = state.config.whistles;
         this.nodes.autoLaunch.checked = state.config.autoLaunch;
         this.nodes.finaleMode.checked = state.config.finale;
         this.nodes.skyLighting.value = state.config.skyLighting;

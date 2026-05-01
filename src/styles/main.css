@@ -91,6 +91,7 @@ body {
     display: flex;
     justify-content: space-between;
     transition: opacity 0.3s, visibility 0.3s;
+    z-index: 10;
 }
 
 @media (min-width: 840px) {
@@ -109,8 +110,11 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.42);
+    background-color: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     transition: opacity 0.3s, visibility 0.3s;
+    z-index: 20;
 }
 
 .menu__inner-wrap {
@@ -143,16 +147,34 @@ body {
 
 .menu form {
     width: 100%;
-    max-width: 400px;
-    padding: 0 10px;
-    overflow: auto;
+    max-width: 440px;
+    padding: 0 15px;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+}
+
+/* [REVISI UI GROUPING] Custom Styling buat Kategori */
+.menu-category {
+    display: flex;
+    align-items: center;
+    color: #f59e0b;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 28px 0 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.menu-category:first-child {
+    margin-top: 0;
 }
 
 .menu .form-option {
     display: flex;
     align-items: center;
-    margin: 16px 0;
+    margin: 14px 0;
     transition: opacity 0.3s;
 }
 
@@ -172,29 +194,40 @@ body {
 .menu .form-option--text input {
     display: block;
     width: 50%;
-    height: 30px;
+    height: 32px;
     font-size: 1rem;
     font-family: "Russo One", arial, sans-serif;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
     letter-spacing: 0.06em;
-    background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
 .menu .form-option--text input {
-    padding: 0 8px;
+    padding: 0 10px;
+}
+
+.menu .form-option--select select:focus,
+.menu .form-option--text input:focus {
+    border-color: #f59e0b;
+    color: #fff;
 }
 
 .menu .form-option--select select option {
-    background-color: black;
+    background-color: #111;
 }
 
 .menu .form-option--checkbox input {
     display: block;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     margin: 0;
-    opacity: 0.5;
+    opacity: 0.6;
+    cursor: pointer;
+    accent-color: #f59e0b;
 }
 
 @media (max-width: 840px) {
@@ -247,8 +280,9 @@ body {
     margin-top: auto;
     margin-bottom: 10px;
     padding-top: 6px;
-    font-size: 0.8em;
+    font-size: 0.75em;
     opacity: 0.75;
+    text-align: center;
 }
 
 .credits a {
@@ -298,7 +332,8 @@ body {
     margin: 10px;
     padding: 20px;
     border-radius: 0.3em;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     opacity: 0;
     transform: scale(0.9, 0.9);
     transition-property: opacity, transform;
@@ -317,6 +352,7 @@ body {
     font-size: 1.75em;
     text-transform: uppercase;
     text-align: center;
+    color: #f59e0b;
 }
 
 .help-modal__body {
@@ -324,8 +360,8 @@ body {
     -webkit-overflow-scrolling: touch;
     margin: 1em 0;
     padding: 1em 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.75);
 }
@@ -334,23 +370,22 @@ body {
     flex-shrink: 0;
     outline: none;
     border: none;
-    border-radius: 2px;
-    padding: 0.25em 0.75em;
+    border-radius: 4px;
+    padding: 0.3em 1em;
     margin-top: 0.36em;
     font-family: "Russo One", arial, sans-serif;
     font-size: 1em;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    background-color: rgba(255, 255, 255, 0.25);
-    transition: color 0.3s, background-color 0.3s;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s;
+    cursor: pointer;
 }
 
-.help-modal__close-btn:hover,
-.help-modal__close-btn:active,
-.help-modal__close-btn:focus {
+.help-modal__close-btn:hover {
     color: #FFF;
-    background-color: #09F;
+    background-color: #f59e0b;
 }
 
 .help-modal.active {
