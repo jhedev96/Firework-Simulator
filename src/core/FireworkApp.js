@@ -9,16 +9,18 @@ import { InputManager } from '@/managers/InputManager';
 import { ParticleSystem } from '@/entities/ParticleSystem';
 import { ShellFactory } from '@/entities/ShellFactory';
 import { SequenceManager } from '@/managers/SequenceManager';
+import { WakeLockManager } from '@/managers/WakeLockManager';
 
 /**
  * FireworkApp (Main Orchestrator)
 */
 export class FireworkApp {
-    constructor() {
-        this.simSpeed = 1;
+    constructor(simSpeed) {
+        this.simSpeed = simSpeed || 1;
         this.i18n = new I18nManager();
         this.stateManager = new StateManager();
         this.soundManager = new SoundManager(this.stateManager);
+        this.wakeLockManager = new WakeLockManager(this.stateManager);
         this.ui = new UIManager(this);
         this.renderer = new Renderer(this);
         this.inputManager = new InputManager(this);
@@ -37,7 +39,7 @@ export class FireworkApp {
         });
     }
 
-    init() {
+    #init() {
         this.stateManager.setState({
             paused: false
         });
@@ -81,11 +83,39 @@ export class FireworkApp {
                     star.x += star.speedX * speed;
                     star.y += star.speedY * speed;
 
-                    // [REVISI WHISTLE] Wobble effect physics! (Bikin komet terbang meliuk-liuk)
+                    // ─────────────────────────────────────────────────────────
+                    // [REVISI WHISTLE V4.2] Chaotic Spiral & Thrust Decay
+                    // ─────────────────────────────────────────────────────────
                     if (star.wobble) {
-                        // Goyang ke kiri-kanan pakai Sine wave
-                        star.x += Math.sin(star.life / star.wobbleFreq) * star.wobbleAmp * speed;
+                        star.wobblePhaseX += star.wobbleFreqX * timeStep;
+                        star.wobblePhaseY += star.wobbleFreqY * timeStep; // Frekuensi beda = Lissajous Spiral
+
+                        const currentSpeed = Math.sqrt(star.speedX * star.speedX + star.speedY * star.speedY);
+                        if (currentSpeed > 0) {
+                            const dirX = star.speedX / currentSpeed;
+                            const dirY = star.speedY / currentSpeed;
+
+                            // Vektor tegak lurus
+                            const perpX = -dirY;
+                            const perpY = dirX;
+
+                            // Bikin spiral gila dari gabungan Sin dan Cos
+                            const wobbleForce = Math.sin(star.wobblePhaseX) * star.wobbleAmp;
+                            const chaoticForce = Math.cos(star.wobblePhaseY) * (star.wobbleAmp * 0.6); // Sedikit variasi tambahan
+
+                            // Dorong menyamping sama searah gerakan biar kerasa muter
+                            star.speedX += perpX * wobbleForce + dirX * chaoticForce;
+                            star.speedY += perpY * wobbleForce + dirY * chaoticForce;
+
+                            // Thrust dorong roket ngelawan drag, tapi makin lama makin habis
+                            star.speedX += dirX * star.thrust;
+                            star.speedY += dirY * star.thrust;
+
+                            // [CRITICAL] Bensin habis! Thrust melemah 4% per frame
+                            star.thrust *= 0.96;
+                        }
                     }
+                    // ─────────────────────────────────────────────────────────
 
                     if (!star.heavy) {
                         star.speedX *= starDrag;
@@ -143,5 +173,22 @@ export class FireworkApp {
         });
 
         this.renderer.render(speed);
+    }
+
+    start() {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (Constants.IS_HEADER) {
+                this.#init();
+            } else {
+                const statusEl = document.querySelector('.loading-init__status');
+                if (statusEl) statusEl.textContent = this.i18n.t('ui.lighting');
+                setTimeout(() => {
+                    this.soundManager.preload().then(() => this.#init(), reason => {
+                        this.#init();
+                        console.warn('Audio preload failed, initializing without audio:', reason);
+                    });
+                }, 2000);
+            }
+        });
     }
 }

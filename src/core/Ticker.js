@@ -32,7 +32,7 @@ export class Ticker {
     static frameHandler(timestamp) {
         let frameTime = timestamp - Ticker.lastTimestamp;
         Ticker.lastTimestamp = timestamp;
-        
+
         // make sure negative time isn't reported (first frame can be whacky)
         if (frameTime < 0) {
             frameTime = 17;

@@ -89,8 +89,10 @@ export class Constants {
         '.whistle-shell-label': 'whistleShell',
         '.auto-launch-label': 'autoLaunch',
         '.finale-mode-label': 'finaleMode',
+        '.whistle-only-label': 'whistleOnly',
         '.hide-controls-label': 'hideControls',
         '.fullscreen-label': 'fullscreen',
+        '.wake-lock-label': 'wakeLock',
         '.long-exposure-label': 'longExposure'
     };
 }

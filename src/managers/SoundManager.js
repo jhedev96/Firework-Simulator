@@ -28,11 +28,16 @@ export class SoundManager {
                 .then(checkStatus)
                 .then(res => res.arrayBuffer())
                 .then(data => new Promise(resolve => this.ctx.decodeAudioData(data, resolve)))
+                .catch(e => {
+                    console.warn(`Gagal load audio: ${fileName}. Pastikan folder /sounds/ ada.`);
+                    return null; // Bypass kalau audio gak ada (misal di codepen)
+                })
             );
 
             Promise.all(filePromises).then(buffers => {
-                source.buffers = buffers;
+                source.buffers = buffers.filter(b => b !== null);
             });
+
             allFilePromises.push(...filePromises);
         });
 
@@ -60,7 +65,7 @@ export class SoundManager {
         }
 
         const source = this.sources[type];
-        if (!source || !source.buffers) return;
+        if (!source || !source.buffers || source.buffers.length === 0) return;
 
         const gainNode = this.ctx.createGain();
         gainNode.gain.value = source.volume * scale;

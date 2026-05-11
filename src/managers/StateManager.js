@@ -20,13 +20,15 @@ export class StateManager {
                 size: Constants.IS_DESKTOP ? '3' : Constants.IS_HEADER ? '1.2' : '2',
                 wordShell: true,
                 customWords: "HAPPY,BOOM,WOW",
-                whistles: true, // [REVISI WHISTLE] Jadi simple boolean, logic di-handle class
+                whistles: true,
                 autoLaunch: true,
                 finale: false,
+                whistleOnly: false,
                 skyLighting: Constants.SKY_LIGHT_NORMAL + '',
                 hideControls: Constants.IS_HEADER,
                 longExposure: false,
                 scaleFactor: Constants.IS_MOBILE ? 0.9 : Constants.IS_HEADER ? 0.75 : 1,
+                wakeLock: false,
             }
         };
         if (!Constants.IS_HEADER) this.load();

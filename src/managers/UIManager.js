@@ -31,9 +31,11 @@ export class UIManager {
             autoLaunch: document.querySelector('.auto-launch'),
             finaleMode: document.querySelector('.finale-mode'),
             finaleModeFormOption: document.querySelector('.form-option--finale-mode'),
+            whistleOnly: document.querySelector('.whistle-only'),
             hideControls: document.querySelector('.hide-controls'),
             fullscreen: document.querySelector('.fullscreen'),
             fullscreenFormOption: document.querySelector('.form-option--fullscreen'),
+            wakeLock: document.querySelector('.wake-lock'),
             longExposure: document.querySelector('.long-exposure'),
             helpModal: document.querySelector('.help-modal'),
             helpModalHeader: document.querySelector('.help-modal__header'),
@@ -140,9 +142,11 @@ export class UIManager {
                     whistles: this.nodes.whistleShell.checked,
                     autoLaunch: this.nodes.autoLaunch.checked,
                     finale: this.nodes.finaleMode.checked,
+                    whistleOnly: this.nodes.whistleOnly.checked,
                     skyLighting: this.nodes.skyLighting.value,
                     longExposure: this.nodes.longExposure.checked,
                     hideControls: this.nodes.hideControls.checked,
+                    wakeLock: this.nodes.wakeLock.checked,
                     scaleFactor: parseFloat(this.nodes.scaleFactor.value)
                 }
             });
@@ -152,7 +156,7 @@ export class UIManager {
             if (this.nodes[key]) this.nodes[key].addEventListener('input', updateConfig);
         });
 
-        ['wordShell', 'whistleShell', 'autoLaunch', 'finaleMode', 'longExposure', 'hideControls'].forEach(key => {
+        ['wordShell', 'whistleShell', 'autoLaunch', 'finaleMode', 'longExposure', 'hideControls', 'wakeLock', 'whistleOnly'].forEach(key => {
             if (this.nodes[key]) this.nodes[key].addEventListener('click', () => setTimeout(updateConfig, 0));
         });
 
@@ -232,9 +236,11 @@ export class UIManager {
         this.nodes.whistleShell.checked = state.config.whistles;
         this.nodes.autoLaunch.checked = state.config.autoLaunch;
         this.nodes.finaleMode.checked = state.config.finale;
+        if (this.nodes.whistleOnly) this.nodes.whistleOnly.checked = state.config.whistleOnly;
         this.nodes.skyLighting.value = state.config.skyLighting;
         this.nodes.hideControls.checked = state.config.hideControls;
         this.nodes.fullscreen.checked = state.fullscreen;
+        if (this.nodes.wakeLock) this.nodes.wakeLock.checked = state.config.wakeLock;
         this.nodes.longExposure.checked = state.config.longExposure;
         this.nodes.scaleFactor.value = parseFloat(state.config.scaleFactor).toFixed(2);
 

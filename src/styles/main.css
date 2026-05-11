@@ -114,7 +114,7 @@ body {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     transition: opacity 0.3s, visibility 0.3s;
-    z-index: 20;
+    z-index: 20000;
 }
 
 .menu__inner-wrap {
