@@ -192,6 +192,18 @@ export class ShellFactory {
         };
     }
 
+    static screamerShell(size) {
+        return {
+            shellSize: size,
+            spreadSize: 120 + size * 20, // Ledakannya dibikin kecil banget
+            starDensity: 0.4,
+            starLife: 400 + size * 50,
+            color: Constants.COLOR.White, // Warnanya putih/silver aja biar kayak mesiu biasa
+            crackle: true, // Biar pas meledak cuma bunyi kretek-kretek
+            disableWord: true // Biar tulisan nggak muncul pas mode ini nyala
+        };
+    }
+
     static get shellTypes() {
         return {
             'Random': (size, app) => ShellFactory.randomShell(size, app),

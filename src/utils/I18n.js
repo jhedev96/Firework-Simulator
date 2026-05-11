@@ -24,8 +24,10 @@ export class I18nData {
                 whistleShell: "Whistle Effect",
                 autoFire: "Auto Fire",
                 finaleMode: "Finale Mode",
+                whistleOnly: "Whistle Only Mode",
                 hideControls: "Hide Controls",
                 fullscreen: "Fullscreen",
+                wakeLock: "Keep Screen On",
                 openShutter: "Open Shutter",
                 close: "Close"
             },
@@ -90,6 +92,10 @@ export class I18nData {
                     h: "Finale Mode",
                     b: "Launches intense bursts of fireworks. May cause lag. Requires 'Auto Fire' to be enabled."
                 },
+                whistleOnly: {
+                    h: "Whistle Only Mode",
+                    b: "Forces all fireworks to be screamer/whistle rockets with chaotic physics and a small crackle burst."
+                },
                 hideControls: {
                     h: "Hide Controls",
                     b: "Hides the translucent controls along the top of the screen. Tap the top-right corner to re-open this menu."
@@ -97,6 +103,10 @@ export class I18nData {
                 fullscreen: {
                     h: "Fullscreen",
                     b: "Toggles fullscreen mode."
+                },
+                wakeLock: {
+                    h: "Keep Screen On",
+                    b: "Prevents your device screen from turning off or sleeping while the simulator is running."
                 },
                 longExposure: {
                     h: "Open Shutter",
@@ -125,8 +135,10 @@ export class I18nData {
                 whistleShell: "Efek Roket Siul",
                 autoFire: "Tembak Otomatis",
                 finaleMode: "Mode Finale",
+                whistleOnly: "Mode Siul Saja",
                 hideControls: "Sembunyikan Tombol",
                 fullscreen: "Layar Penuh",
+                wakeLock: "Layar Tetap Menyala",
                 openShutter: "Mode Shutter Terbuka",
                 close: "Tutup"
             },
@@ -191,6 +203,10 @@ export class I18nData {
                     h: "Mode Finale",
                     b: "Ngeluarin ledakan kembang api bertubi-tubi di akhir. Rawan bikin nge-lag. Harus nyalain 'Tembak Otomatis' dulu."
                 },
+                whistleOnly: {
+                    h: "Mode Siul Saja",
+                    b: "Memaksa semua peluncuran jadi roket siulan (screamer) liar dengan ledakan petasan kecil di akhir."
+                },
                 hideControls: {
                     h: "Sembunyikan Tombol",
                     b: "Ngapus tombol transparan di atas layar biar bersih. Kalau mau buka menu lagi, klik aja di pojok kanan atas."
@@ -198,6 +214,10 @@ export class I18nData {
                 fullscreen: {
                     h: "Layar Penuh",
                     b: "Bikin tampilannya penuh nutupin layar."
+                },
+                wakeLock: {
+                    h: "Layar Tetap Menyala",
+                    b: "Mencegah layar HP kamu mati otomatis atau standby saat simulator sedang berjalan."
                 },
                 longExposure: {
                     h: "Mode Shutter Terbuka",
@@ -222,10 +242,12 @@ export class I18nManager {
         this.selectedSetting = saved || 'auto';
         this.currentLang = this.selectedSetting === 'auto' ? this.detectSystemLang() : this.selectedSetting;
     }
+
     detectSystemLang() {
         const sysLang = navigator.language.split('-')[0].toLowerCase();
         return this.supportedLangs.includes(sysLang) ? sysLang : this.defaultLang;
     }
+
     setLanguage(setting) {
         this.selectedSetting = setting;
         try {
@@ -234,6 +256,7 @@ export class I18nManager {
         this.currentLang = setting === 'auto' ? this.detectSystemLang() : setting;
         this.translateDOM();
     }
+
     t(key) {
         if (!key) return '';
         const keys = key.split('.');
@@ -251,6 +274,7 @@ export class I18nManager {
         }
         return value || key;
     }
+
     translateDOM() {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             el.innerHTML = this.t(el.getAttribute('data-i18n'));

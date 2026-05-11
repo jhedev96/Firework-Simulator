@@ -9,6 +9,12 @@ import { ShellFactory } from '@/entities/ShellFactory';
 export class Shell {
     constructor(options, app) {
         this.app = app;
+
+        // Kalau mode siulan doang aktif, kita timpa settingan kembang apinya pake tipe screamer
+        if (app.stateManager.state.config.whistleOnly) {
+            options = ShellFactory.screamerShell(options.shellSize || app.stateManager.shellSize);
+        }
+
         Object.assign(this, options);
         this.starLifeVariation = options.starLifeVariation || 0.125;
         this.color = options.color || Utils.randomColor();
@@ -34,7 +40,17 @@ export class Shell {
         const launchVelocity = Math.pow(launchDistance * 0.04, 0.64);
         const color = typeof this.color === 'string' && this.color !== 'random' ? this.color : Constants.COLOR.White;
 
-        const comet = this.comet = this.app.particles.addStar(launchX, launchY, color, Math.PI, launchVelocity * (this.horsetail ? 1.2 : 1), launchVelocity * (this.horsetail ? 100 : 400));
+        // [REVISI WHISTLE V4.2] Acak arah luncur biar menyebar, nggak melulu lurus ke atas!
+        let launchAngle = Math.PI;
+        //const isWhistle = this.app.stateManager.state.config.whistles && Math.random() < 0.25;
+        const isWhistle = this.app.stateManager.state.config.whistleOnly || (this.app.stateManager.state.config.whistles && Math.random() < 0.25);
+
+        if (isWhistle) {
+            // Arah luncurnya kita bikin miring secara acak (-0.3 sampai +0.3 radian)
+            launchAngle += Math2.random(-0.3, 0.3);
+        }
+
+        const comet = this.comet = this.app.particles.addStar(launchX, launchY, color, launchAngle, launchVelocity * (this.horsetail ? 1.2 : 1), launchVelocity * (this.horsetail ? 100 : 400));
         comet.heavy = true;
         comet.spinRadius = Math2.random(0.32, 0.85);
         comet.sparkFreq = 32 / this.app.stateManager.quality;
@@ -47,6 +63,7 @@ export class Shell {
             comet.sparkSpeed = 0.5;
             comet.sparkLife = 500;
         }
+
         if (this.color === Constants.INVISIBLE) comet.sparkColor = Constants.COLOR.Gold;
         if (Math.random() > 0.4 && !this.horsetail) {
             comet.secondColor = Constants.INVISIBLE;
@@ -55,16 +72,20 @@ export class Shell {
 
         comet.onDeath = c => this.burst(c.x, c.y);
 
-        // ────────────────────────────
-        // [REVISI WHISTLE] Visual Wobble + Sound
-        // ────────────────────────────
-        const config = this.app.stateManager.state.config;
-        // 25% chance roket bakal terbang sambil berputar & bunyi siul kalau fiturnya nyala
-        if (config.whistles && Math.random() < 0.25) {
+        // [REVISI WHISTLE V4.2] Setup spiral yang lebih liar (Lissajous Curve) + Thrust Decay
+        if (isWhistle) {
+            this.app.soundManager.playSound('lift');
             this.app.soundManager.playSound('whistle');
             comet.wobble = true;
-            comet.wobbleFreq = Math2.random(15, 30); // Seberapa cepat dia meliuk
-            comet.wobbleAmp = Math2.random(2.5, 14.5); // Seberapa lebar liukannya
+            // Bikin 2 frekuensi berbeda buat sumbu beda, jadi gerakannya muter-muter nggak karuan
+            comet.wobblePhaseX = Math2.random(0, Math.PI * 2);
+            comet.wobblePhaseY = Math2.random(0, Math.PI * 2);
+            comet.wobbleFreqX = Math2.random(0.01, 0.02);
+            comet.wobbleFreqY = Math2.random(0.015, 0.025);
+            comet.wobbleAmp = Math2.random(0.3, 0.8); // Lebarnya dikecilin dikit biar nggak offscreen
+
+            // Thrust (Daya Dorong) dikurangin biar nanti bisa melambat & meledak di tengah frame
+            comet.thrust = Math2.random(0.05, 0.12);
         } else {
             this.app.soundManager.playSound('lift');
         }
@@ -92,6 +113,7 @@ export class Shell {
         };
 
         if (this.floral) onDeath = star => ShellFactory.floralEffect(star, this.app);
+
         if (this.fallingLeaves) onDeath = star => ShellFactory.fallingLeavesEffect(star, this.app);
 
         const glitterMap = {

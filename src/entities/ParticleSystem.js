@@ -45,10 +45,14 @@ export class ParticleSystem {
         instance.sparkLifeVariation = 0.25;
         instance.strobe = false;
 
-        // [REVISI WHISTLE] Tambahin parameter wobble
+        // [REVISI WHISTLE PHYSICS] Properties untuk engine fisika spiral
         instance.wobble = false;
-        instance.wobbleFreq = 0;
+        instance.wobblePhaseX = 0;
+        instance.wobblePhaseY = 0;
+        instance.wobbleFreqX = 0;
+        instance.wobbleFreqY = 0;
         instance.wobbleAmp = 0;
+        instance.thrust = 0;
 
         this.stars[color].push(instance);
         return instance;
