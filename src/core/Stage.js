@@ -27,14 +27,18 @@ export class Stage {
 
     // Stage constructor (canvas can be a dom node, or an id string)
     constructor(canvas) {
-        if (typeof canvas === 'string') canvas = document.getElementById(canvas);
+        if (typeof canvas === 'string')
+            canvas = document.getElementById(canvas);
 
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.canvas.style.touchAction = 'none';
 
         this.speed = 1;
-        this.dpr = Stage.disableHighDPI ? 1 : ((window.devicePixelRatio || 1) / (this.ctx.backingStorePixelRatio || 1));
+        this.dpr = Stage.disableHighDPI
+            ? 1
+            : (window.devicePixelRatio || 1) /
+              (this.ctx.backingStorePixelRatio || 1);
 
         this.width = canvas.width;
         this.height = canvas.height;
@@ -57,8 +61,8 @@ export class Stage {
             pointerend: [],
             lastPointerPos: {
                 x: 0,
-                y: 0
-            }
+                y: 0,
+            },
         };
     }
 
@@ -77,7 +81,7 @@ export class Stage {
     dispatchEvent(event, val) {
         const listeners = this._listeners[event];
         if (listeners) {
-            listeners.forEach(listener => listener.call(this, val));
+            listeners.forEach((listener) => listener.call(this, val));
         } else {
             throw new Error('Invalid Event');
         }
@@ -100,9 +104,9 @@ export class Stage {
         const evt = {
             type: type,
             x: x,
-            y: y
+            y: y,
         };
-        evt.onCanvas = (x >= 0 && x <= this.width && y >= 0 && y <= this.height);
+        evt.onCanvas = x >= 0 && x <= this.width && y >= 0 && y <= this.height;
         this.dispatchEvent('pointer' + type, evt);
     }
 
@@ -110,7 +114,7 @@ export class Stage {
         const bbox = canvas.getBoundingClientRect();
         return {
             x: (x - bbox.left) * (canvas.width / bbox.width),
-            y: (y - bbox.top) * (canvas.height / bbox.height)
+            y: (y - bbox.top) * (canvas.height / bbox.height),
         };
     }
 
@@ -122,8 +126,12 @@ export class Stage {
         if (evt.type === 'mousemove') type = 'move';
         else if (evt.type === 'mouseup') type = 'end';
 
-        Stage.stages.forEach(stage => {
-            const pos = Stage.windowToCanvas(stage.canvas, evt.clientX, evt.clientY);
+        Stage.stages.forEach((stage) => {
+            const pos = Stage.windowToCanvas(
+                stage.canvas,
+                evt.clientX,
+                evt.clientY,
+            );
             stage.pointerEvent(type, pos.x / stage.dpr, pos.y / stage.dpr);
         });
     }
@@ -136,13 +144,22 @@ export class Stage {
         if (evt.type === 'touchmove') type = 'move';
         else if (evt.type === 'touchend') type = 'end';
 
-        Stage.stages.forEach(stage => {
+        Stage.stages.forEach((stage) => {
             for (let touch of Array.from(evt.changedTouches)) {
                 let pos;
                 if (type !== 'end') {
-                    pos = Stage.windowToCanvas(stage.canvas, touch.clientX, touch.clientY);
+                    pos = Stage.windowToCanvas(
+                        stage.canvas,
+                        touch.clientX,
+                        touch.clientY,
+                    );
                     stage._listeners.lastPointerPos = pos;
-                    if (type === 'start') stage.pointerEvent('move', pos.x / stage.dpr, pos.y / stage.dpr);
+                    if (type === 'start')
+                        stage.pointerEvent(
+                            'move',
+                            pos.x / stage.dpr,
+                            pos.y / stage.dpr,
+                        );
                 } else {
                     pos = stage._listeners.lastPointerPos;
                 }

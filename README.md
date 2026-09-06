@@ -18,12 +18,14 @@ Originally inspired by and based on [Caleb Miller's v2 CodePen](https://codepen.
 
 ## 🚀 Version Changelog & New Features
 
-### [v4.5] - Utilities 🆕
+### [v5.0] - Arsenal Update 🆕
+* **New Shell Types:** Added Peony (no trails), Brocade Crown (heavy gold), Ground Mine (V-shape eruption), and Pattern (Heart).
+* **3D Jitter Patterns:** Mathematical pattern shells now feature organic 3D tilt, squash, and jitter for lifelike powder explosions.
+
+### [v4.0 & v4.5] - Immersion & Utilities
 * **Wake Lock API:** Added a "Keep Screen On" toggle to prevent devices from sleeping during the show.
 * **Screamer Mode:** A "Whistle Only" behavior that forces all fireworks to be chaotic, whistling rockets.
 * **Improvements:** Much more organic whistling rockets and more.
-
-### [v4.0] - Immersion
 * **Settings Redesign:** Cleaned up and categorized the UI options.
 * **Ultra Realistic Word Shell:** Text fireworks now feature 3D depth, rotation, and organic particle scattering.
 * **Wobble Physics:** Whistling rockets now utilize Lissajous curve physics and thrust decay for chaotic, spiraling ascents.

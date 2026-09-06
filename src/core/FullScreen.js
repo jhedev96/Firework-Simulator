@@ -1,6 +1,6 @@
 /**
  * Full Screen
-*/
+ */
 
 export class FullScreen {
     // Semua variabel dimasukin ke dalam class sebagai static properties
@@ -45,12 +45,18 @@ export class FullScreen {
     ];
 
     // so it doesn't throw if no window or document
-    static doc = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
+    static doc =
+        typeof window !== 'undefined' && typeof window.document !== 'undefined'
+            ? window.document
+            : {};
 
-    static vendor = ('fullscreenEnabled' in FullScreen.doc && Object.keys(FullScreen.key)) ||
+    static vendor =
+        ('fullscreenEnabled' in FullScreen.doc &&
+            Object.keys(FullScreen.key)) ||
         (FullScreen.webkit[0] in FullScreen.doc && FullScreen.webkit) ||
         (FullScreen.moz[0] in FullScreen.doc && FullScreen.moz) ||
-        (FullScreen.ms[0] in FullScreen.doc && FullScreen.ms) || [];
+        (FullScreen.ms[0] in FullScreen.doc && FullScreen.ms) ||
+        [];
 
     // Method-method pakai FullScreen.* untuk akses variabel statisnya
     static requestFullscreen(element) {
@@ -61,7 +67,9 @@ export class FullScreen {
     }
 
     static get exitFullscreen() {
-        return FullScreen.doc[FullScreen.vendor[FullScreen.key.exitFullscreen]].bind(FullScreen.doc);
+        return FullScreen.doc[
+            FullScreen.vendor[FullScreen.key.exitFullscreen]
+        ].bind(FullScreen.doc);
     }
 
     static get fullscreenPseudoClass() {
@@ -69,33 +77,53 @@ export class FullScreen {
     }
 
     static addEventListener(type, handler, options) {
-        FullScreen.doc.addEventListener(FullScreen.vendor[FullScreen.key[type]], handler, options);
+        FullScreen.doc.addEventListener(
+            FullScreen.vendor[FullScreen.key[type]],
+            handler,
+            options,
+        );
     }
     static removeEventListener(type, handler, options) {
-        FullScreen.doc.removeEventListener(FullScreen.vendor[FullScreen.key[type]], handler, options);
+        FullScreen.doc.removeEventListener(
+            FullScreen.vendor[FullScreen.key[type]],
+            handler,
+            options,
+        );
     }
 
     static get fullscreenEnabled() {
-        return Boolean(FullScreen.doc[FullScreen.vendor[FullScreen.key.fullscreenEnabled]]);
+        return Boolean(
+            FullScreen.doc[FullScreen.vendor[FullScreen.key.fullscreenEnabled]],
+        );
     }
     static set fullscreenEnabled(val) {}
 
     static get fullscreenElement() {
-        return FullScreen.doc[FullScreen.vendor[FullScreen.key.fullscreenElement]];
+        return FullScreen.doc[
+            FullScreen.vendor[FullScreen.key.fullscreenElement]
+        ];
     }
     static set fullscreenElement(val) {}
 
     static get onfullscreenchange() {
-        return FullScreen.doc[`on${FullScreen.vendor[FullScreen.key.fullscreenchange]}`.toLowerCase()];
+        return FullScreen.doc[
+            `on${FullScreen.vendor[FullScreen.key.fullscreenchange]}`.toLowerCase()
+        ];
     }
     static set onfullscreenchange(handler) {
-        return FullScreen.doc[`on${FullScreen.vendor[FullScreen.key.fullscreenchange]}`.toLowerCase()] = handler;
+        return (FullScreen.doc[
+            `on${FullScreen.vendor[FullScreen.key.fullscreenchange]}`.toLowerCase()
+        ] = handler);
     }
 
     static get onfullscreenerror() {
-        return FullScreen.doc[`on${FullScreen.vendor[FullScreen.key.fullscreenerror]}`.toLowerCase()];
+        return FullScreen.doc[
+            `on${FullScreen.vendor[FullScreen.key.fullscreenerror]}`.toLowerCase()
+        ];
     }
     static set onfullscreenerror(handler) {
-        return FullScreen.doc[`on${FullScreen.vendor[FullScreen.key.fullscreenerror]}`.toLowerCase()] = handler;
+        return (FullScreen.doc[
+            `on${FullScreen.vendor[FullScreen.key.fullscreenerror]}`.toLowerCase()
+        ] = handler);
     }
 }

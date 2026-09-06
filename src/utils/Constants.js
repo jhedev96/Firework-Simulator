@@ -1,6 +1,6 @@
 /**
  * Constants & Public Variables
-*/
+ */
 export class Constants {
     static IS_MOBILE = window.innerWidth <= 640;
     static IS_DESKTOP = window.innerWidth > 800;
@@ -14,6 +14,7 @@ export class Constants {
 
     static MAX_WIDTH = 7680;
     static MAX_HEIGHT = 4320;
+
     static GRAVITY = 0.9;
     static PI_2 = Math.PI * 2;
     static PI_HALF = Math.PI * 0.5;
@@ -25,44 +26,44 @@ export class Constants {
     static SKY_LIGHT_NONE = 0;
     static SKY_LIGHT_DIM = 1;
     static SKY_LIGHT_NORMAL = 2;
-    
+
     static SOUND_BASE_URL = './assets/sounds/';
     static SOUND_SOURCES = {
         lift: {
             volume: 1,
             playbackRateMin: 0.85,
             playbackRateMax: 0.95,
-            fileNames: ['lift1.mp3', 'lift2.mp3', 'lift3.mp3']
+            fileNames: ['lift1.mp3', 'lift2.mp3', 'lift3.mp3'],
         },
         burst: {
             volume: 1,
             playbackRateMin: 0.8,
             playbackRateMax: 0.9,
-            fileNames: ['burst1.mp3', 'burst2.mp3']
+            fileNames: ['burst1.mp3', 'burst2.mp3'],
         },
         burstSmall: {
             volume: 0.25,
             playbackRateMin: 0.8,
             playbackRateMax: 1,
-            fileNames: ['burst-sm-1.mp3', 'burst-sm-2.mp3']
+            fileNames: ['burst-sm-1.mp3', 'burst-sm-2.mp3'],
         },
         crackle: {
             volume: 0.2,
             playbackRateMin: 1,
             playbackRateMax: 1,
-            fileNames: ['crackle1.mp3']
+            fileNames: ['crackle1.mp3'],
         },
         crackleSmall: {
             volume: 0.3,
             playbackRateMin: 1,
             playbackRateMax: 1,
-            fileNames: ['crackle-sm-1.mp3']
+            fileNames: ['crackle-sm-1.mp3'],
         },
         whistle: {
             volume: 0.5,
             playbackRateMin: 0.85,
             playbackRateMax: 0.95,
-            fileNames: ['whistle1.mp3', 'whistle2.mp3']
+            fileNames: ['whistle1.mp3', 'whistle2.mp3'],
         },
     };
 
@@ -72,12 +73,11 @@ export class Constants {
         Blue: '#1e7fff',
         Purple: '#e60aff',
         Gold: '#ffbf36',
-        White: '#ffffff'
+        White: '#ffffff',
     };
 
     static INVISIBLE = '_INVISIBLE_';
 
-    // Map UI labels to Help Topic Keys (using data-i18n key logic)
     static HELP_TOPIC_SELECTORS = {
         '.shell-type-label': 'shellType',
         '.shell-size-label': 'shellSize',
@@ -93,6 +93,6 @@ export class Constants {
         '.hide-controls-label': 'hideControls',
         '.fullscreen-label': 'fullscreen',
         '.wake-lock-label': 'wakeLock',
-        '.long-exposure-label': 'longExposure'
+        '.long-exposure-label': 'longExposure',
     };
 }
