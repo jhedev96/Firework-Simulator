@@ -1,6 +1,6 @@
 /**
  * Math2
-*/
+ */
 export class Math2 {
     // degree/radian conversion constants
     static toDeg = 180 / Math.PI;
@@ -34,7 +34,7 @@ export class Math2 {
     static splitVector(speed, angle) {
         return {
             x: Math.sin(angle) * speed,
-            y: -Math.cos(angle) * speed
+            y: -Math.cos(angle) * speed,
         };
     }
 

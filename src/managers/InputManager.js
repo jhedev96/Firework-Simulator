@@ -2,7 +2,7 @@ import { FullScreen } from '@/core/FullScreen';
 
 /**
  * InputManager
-*/
+ */
 export class InputManager {
     constructor(app) {
         this.app = app;
@@ -14,10 +14,17 @@ export class InputManager {
     }
 
     bindEvents() {
-        this.mainStage.addEventListener('pointerstart', e => this.handlePointerStart(e));
-        this.mainStage.addEventListener('pointerend', () => this.isUpdatingSpeed = false);
-        this.mainStage.addEventListener('pointermove', e => this.handlePointerMove(e));
-        window.addEventListener('keydown', e => this.handleKeydown(e));
+        this.mainStage.addEventListener('pointerstart', (e) =>
+            this.handlePointerStart(e),
+        );
+        this.mainStage.addEventListener(
+            'pointerend',
+            () => (this.isUpdatingSpeed = false),
+        );
+        this.mainStage.addEventListener('pointermove', (e) =>
+            this.handlePointerMove(e),
+        );
+        window.addEventListener('keydown', (e) => this.handleKeydown(e));
     }
 
     toggleFullscreen() {
@@ -30,26 +37,27 @@ export class InputManager {
     handlePointerStart(event) {
         const btnSize = 50;
         if (event.y < btnSize) {
-            if (event.x < btnSize) return this.stateManager.setState({
-                paused: !this.stateManager.state.paused
-            });
-            if (event.x > this.mainStage.width / 2 - btnSize / 2 && event.x < this.mainStage.width / 2 + btnSize / 2) {
+            if (event.x < btnSize)
                 return this.stateManager.setState({
-                    soundEnabled: !this.stateManager.state.soundEnabled
+                    paused: !this.stateManager.state.paused,
                 });
-            }
-            if (event.x > this.mainStage.width - btnSize) return this.stateManager.setState({
-                menuOpen: !this.stateManager.state.menuOpen
-            });
+            if (
+                event.x > this.mainStage.width / 2 - btnSize / 2 &&
+                event.x < this.mainStage.width / 2 + btnSize / 2
+            )
+                return this.stateManager.setState({
+                    soundEnabled: !this.stateManager.state.soundEnabled,
+                });
+            if (event.x > this.mainStage.width - btnSize)
+                return this.stateManager.setState({
+                    menuOpen: !this.stateManager.state.menuOpen,
+                });
         }
 
         if (!this.stateManager.isRunning) return;
-
-        if (this.updateSpeedFromEvent(event)) {
-            this.isUpdatingSpeed = true;
-        } else if (event.onCanvas) {
+        if (this.updateSpeedFromEvent(event)) this.isUpdatingSpeed = true;
+        else if (event.onCanvas)
             this.app.shellFactory.launchShellFromConfig(event);
-        }
     }
 
     handlePointerMove(event) {
@@ -58,25 +66,30 @@ export class InputManager {
     }
 
     handleKeydown(event) {
-        if (event.keyCode === 80) this.stateManager.setState({
-            paused: !this.stateManager.state.paused
-        }); // P
-        else if (event.keyCode === 79) this.stateManager.setState({
-            menuOpen: !this.stateManager.state.menuOpen
-        }); // O
-        else if (event.keyCode === 27) this.stateManager.setState({
-            menuOpen: false
-        }); // Esc
+        if (event.keyCode === 80)
+            this.stateManager.setState({
+                paused: !this.stateManager.state.paused,
+            });
+        else if (event.keyCode === 79)
+            this.stateManager.setState({
+                menuOpen: !this.stateManager.state.menuOpen,
+            });
+        else if (event.keyCode === 27)
+            this.stateManager.setState({
+                menuOpen: false,
+            });
     }
 
     updateSpeedFromEvent(event) {
         if (this.isUpdatingSpeed || event.y >= this.mainStage.height - 44) {
             const edge = 16;
-            const newSpeed = (event.x - edge) / (this.mainStage.width - edge * 2);
+            const newSpeed =
+                (event.x - edge) / (this.mainStage.width - edge * 2);
             this.app.simSpeed = Math.min(Math.max(newSpeed, 0), 1);
             this.app.renderer.speedBarOpacity = 1;
             return true;
         }
+
         return false;
     }
 }

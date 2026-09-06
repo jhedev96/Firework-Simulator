@@ -1,236 +1,244 @@
 /**
  * I18n Dictionary
-*/
+ */
 export class I18nData {
     static dict = {
         en: {
             ui: {
-                loading: "Loading",
-                assembling: "Assembling Shells",
-                lighting: "Lighting Fuses",
-                settings: "Settings",
-                subheader: "For more info, click any label.",
-                catGeneral: "🌐 General & Display",
-                catFirework: "🎆 Firework Settings",
-                catSim: "⚙️ Simulation Mode",
-                language: "Language",
-                shellType: "Shell Type",
-                shellSize: "Shell Size",
-                quality: "Quality",
-                skyLighting: "Sky Lighting",
-                scale: "Scale",
-                wordShell: "Word Firework",
-                wordText: "Custom Words",
-                whistleShell: "Whistle Effect",
-                autoFire: "Auto Fire",
-                finaleMode: "Finale Mode",
-                whistleOnly: "Whistle Only Mode",
-                hideControls: "Hide Controls",
-                fullscreen: "Fullscreen",
-                wakeLock: "Keep Screen On",
-                openShutter: "Open Shutter",
-                close: "Close"
+                loading: 'Loading',
+                assembling: 'Assembling Shells',
+                lighting: 'Lighting Fuses',
+                settings: 'Settings',
+                subheader: 'For more info, click any label.',
+                catGeneral: '🌐 General & Display',
+                catFirework: '🎆 Firework Settings',
+                catSim: '⚙️ Simulation Mode',
+                language: 'Language',
+                shellType: 'Shell Type',
+                shellSize: 'Shell Size',
+                quality: 'Quality',
+                skyLighting: 'Sky Lighting',
+                scale: 'Scale',
+                wordShell: 'Word Firework',
+                wordText: 'Custom Words',
+                whistleShell: 'Whistle Effect',
+                autoFire: 'Auto Fire',
+                finaleMode: 'Finale Mode',
+                whistleOnly: 'Whistle Only Mode',
+                hideControls: 'Hide Controls',
+                fullscreen: 'Fullscreen',
+                wakeLock: 'Keep Screen On',
+                openShutter: 'Open Shutter',
+                close: 'Close',
             },
             opt: {
-                langAuto: "Auto (Detect)",
-                random: "Random",
-                crackle: "Crackle",
-                crossette: "Crossette",
-                crysanthemum: "Crysanthemum",
-                fallingLeaves: "Falling Leaves",
-                floral: "Floral",
-                ghost: "Ghost",
-                horseTail: "Horse Tail",
-                palm: "Palm",
-                ring: "Ring",
-                strobe: "Strobe",
-                willow: "Willow",
-                low: "Low",
-                normal: "Normal",
-                high: "High",
-                none: "None",
-                dim: "Dim"
+                langAuto: 'Auto (Detect)',
+                random: 'Random',
+                crackle: 'Crackle',
+                crossette: 'Crossette',
+                crysanthemum: 'Crysanthemum',
+                fallingLeaves: 'Falling Leaves',
+                floral: 'Floral',
+                ghost: 'Ghost',
+                horseTail: 'Horse Tail',
+                palm: 'Palm',
+                ring: 'Ring',
+                strobe: 'Strobe',
+                willow: 'Willow',
+                low: 'Low',
+                normal: 'Normal',
+                high: 'High',
+                none: 'None',
+                dim: 'Dim',
+                peony: 'Peony',
+                brocadeCrown: 'Brocade Crown',
+                groundMine: 'Ground Mine',
+                patternHeart: 'Pattern (Heart)',
             },
             help: {
                 shellType: {
-                    h: "Shell Type",
-                    b: "The type of firework that will be launched. Select 'Random' for a nice assortment!"
+                    h: 'Shell Type',
+                    b: "The type of firework that will be launched. Select 'Random' for a nice assortment!",
                 },
                 shellSize: {
-                    h: "Shell Size",
-                    b: "The size of the fireworks. Larger shells have bigger bursts with more stars, but require more processing power and may cause lag."
+                    h: 'Shell Size',
+                    b: 'The size of the fireworks. Larger shells have bigger bursts with more stars, but require more processing power and may cause lag.',
                 },
                 quality: {
-                    h: "Quality",
-                    b: "Overall graphics quality. If the animation is not running smoothly, try lowering the quality."
+                    h: 'Quality',
+                    b: 'Overall graphics quality. If the animation is not running smoothly, try lowering the quality.',
                 },
                 skyLighting: {
-                    h: "Sky Lighting",
-                    b: "Illuminates the background as fireworks explode. If the background looks too bright, try setting it to 'Dim' or 'None'."
+                    h: 'Sky Lighting',
+                    b: "Illuminates the background as fireworks explode. If the background looks too bright, try setting it to 'Dim' or 'None'.",
                 },
                 scaleFactor: {
-                    h: "Scale",
-                    b: "Allows scaling the size of all fireworks, essentially moving you closer or farther away."
+                    h: 'Scale',
+                    b: 'Allows scaling the size of all fireworks, essentially moving you closer or farther away.',
                 },
                 wordShell: {
-                    h: "Word Firework",
-                    b: "Randomly replaces a firework burst with a custom word from the text field. Looks incredibly realistic with real explosion physics!"
+                    h: 'Word Firework',
+                    b: 'Randomly replaces a firework burst with a custom word from the text field. Looks incredibly realistic with real explosion physics!',
                 },
                 wordText: {
-                    h: "Custom Words",
-                    b: "Comma-separated list of words to display when 'Word Firework' is enabled. Keep words short for best results (e.g. BOOM, WOW)."
+                    h: 'Custom Words',
+                    b: "Comma-separated list of words to display when 'Word Firework' is enabled. Keep words short for best results (e.g. BOOM, WOW).",
                 },
                 whistleShell: {
-                    h: "Whistle Effect",
-                    b: "Randomly makes a firework rocket wiggle and scream (whistle) as it ascends!"
+                    h: 'Whistle Effect',
+                    b: 'Randomly makes a firework rocket wiggle and scream (whistle) as it ascends!',
                 },
                 autoLaunch: {
-                    h: "Auto Fire",
-                    b: "Launches sequences of fireworks automatically. Sit back and enjoy the show, or disable to have full control."
+                    h: 'Auto Fire',
+                    b: 'Launches sequences of fireworks automatically. Sit back and enjoy the show, or disable to have full control.',
                 },
                 finaleMode: {
-                    h: "Finale Mode",
-                    b: "Launches intense bursts of fireworks. May cause lag. Requires 'Auto Fire' to be enabled."
+                    h: 'Finale Mode',
+                    b: "Launches intense bursts of fireworks. May cause lag. Requires 'Auto Fire' to be enabled.",
                 },
                 whistleOnly: {
-                    h: "Whistle Only Mode",
-                    b: "Forces all fireworks to be screamer/whistle rockets with chaotic physics and a small crackle burst."
+                    h: 'Whistle Only Mode',
+                    b: 'Forces all fireworks to be screamer/whistle rockets with chaotic physics and a small crackle burst.',
                 },
                 hideControls: {
-                    h: "Hide Controls",
-                    b: "Hides the translucent controls along the top of the screen. Tap the top-right corner to re-open this menu."
+                    h: 'Hide Controls',
+                    b: 'Hides the translucent controls along the top of the screen. Tap the top-right corner to re-open this menu.',
                 },
                 fullscreen: {
-                    h: "Fullscreen",
-                    b: "Toggles fullscreen mode."
+                    h: 'Fullscreen',
+                    b: 'Toggles fullscreen mode.',
                 },
                 wakeLock: {
-                    h: "Keep Screen On",
-                    b: "Prevents your device screen from turning off or sleeping while the simulator is running."
+                    h: 'Keep Screen On',
+                    b: 'Prevents your device screen from turning off or sleeping while the simulator is running.',
                 },
                 longExposure: {
-                    h: "Open Shutter",
-                    b: "Experimental effect that preserves long streaks of light, similar to leaving a camera shutter open."
-                }
-            }
+                    h: 'Open Shutter',
+                    b: 'Experimental effect that preserves long streaks of light, similar to leaving a camera shutter open.',
+                },
+            },
         },
         id: {
             ui: {
-                loading: "Memuat",
-                assembling: "Merakit Kembang Api",
-                lighting: "Menyalakan Sumbu",
-                settings: "Pengaturan",
-                subheader: "Klik label mana saja untuk info lebih lanjut.",
-                catGeneral: "🌐 Umum & Tampilan",
-                catFirework: "🎆 Seting Kembang Api",
-                catSim: "⚙️ Mode Simulasi",
-                language: "Bahasa",
-                shellType: "Tipe Kembang Api",
-                shellSize: "Ukuran Kembang Api",
-                quality: "Kualitas Grafis",
-                skyLighting: "Cahaya Langit",
-                scale: "Skala Tampilan",
-                wordShell: "Kembang Api Teks",
-                wordText: "Kata Kustom",
-                whistleShell: "Efek Roket Siul",
-                autoFire: "Tembak Otomatis",
-                finaleMode: "Mode Finale",
-                whistleOnly: "Mode Siul Saja",
-                hideControls: "Sembunyikan Tombol",
-                fullscreen: "Layar Penuh",
-                wakeLock: "Layar Tetap Menyala",
-                openShutter: "Mode Shutter Terbuka",
-                close: "Tutup"
+                loading: 'Memuat',
+                assembling: 'Merakit Kembang Api',
+                lighting: 'Menyalakan Sumbu',
+                settings: 'Pengaturan',
+                subheader: 'Klik label mana saja untuk info lebih lanjut.',
+                catGeneral: '🌐 Umum & Tampilan',
+                catFirework: '🎆 Seting Kembang Api',
+                catSim: '⚙️ Mode Simulasi',
+                language: 'Bahasa',
+                shellType: 'Tipe Kembang Api',
+                shellSize: 'Ukuran Kembang Api',
+                quality: 'Kualitas Grafis',
+                skyLighting: 'Cahaya Langit',
+                scale: 'Skala Tampilan',
+                wordShell: 'Kembang Api Teks',
+                wordText: 'Kata Kustom',
+                whistleShell: 'Efek Roket Siul',
+                autoFire: 'Tembak Otomatis',
+                finaleMode: 'Mode Finale',
+                whistleOnly: 'Mode Siul Saja',
+                hideControls: 'Sembunyikan Tombol',
+                fullscreen: 'Layar Penuh',
+                wakeLock: 'Layar Tetap Menyala',
+                openShutter: 'Mode Shutter Terbuka',
+                close: 'Tutup',
             },
             opt: {
-                langAuto: "Auto (Deteksi Sistem)",
-                random: "Acak",
-                crackle: "Gemeretak",
-                crossette: "Salib Api",
-                crysanthemum: "Krisan",
-                fallingLeaves: "Daun Berguguran",
-                floral: "Bunga",
-                ghost: "Hantu",
-                horseTail: "Ekor Kuda",
-                palm: "Palem",
-                ring: "Cincin",
-                strobe: "Kelap-kelip",
-                willow: "Dedalu",
-                low: "Rendah",
-                normal: "Normal",
-                high: "Tinggi",
-                none: "Mati",
-                dim: "Redup"
+                langAuto: 'Auto (Deteksi Sistem)',
+                random: 'Acak',
+                crackle: 'Gemeretak',
+                crossette: 'Salib Api',
+                crysanthemum: 'Krisan',
+                fallingLeaves: 'Daun Berguguran',
+                floral: 'Bunga',
+                ghost: 'Hantu',
+                horseTail: 'Ekor Kuda',
+                palm: 'Palem',
+                ring: 'Cincin',
+                strobe: 'Kelap-kelip',
+                willow: 'Dedalu',
+                low: 'Rendah',
+                normal: 'Normal',
+                high: 'Tinggi',
+                none: 'Mati',
+                dim: 'Redup',
+                peony: 'Peony (Tanpa Ekor)',
+                brocadeCrown: 'Mahkota Emas (Brocade)',
+                groundMine: 'Ranjau Darat (Mine)',
+                patternHeart: 'Pola Hati (Love)',
             },
             help: {
                 shellType: {
-                    h: "Tipe Kembang Api",
-                    b: "Jenis kembang api yang akan diluncurkan. Pilih 'Acak' untuk variasi yang asik!"
+                    h: 'Tipe Kembang Api',
+                    b: "Jenis kembang api yang akan diluncurkan. Pilih 'Acak' untuk variasi yang asik!",
                 },
                 shellSize: {
-                    h: "Ukuran Kembang Api",
-                    b: "Ukuran kembang api. Semakin besar ukurannya, semakin mantap ledakannya, tapi bisa bikin perangkat nge-lag."
+                    h: 'Ukuran Kembang Api',
+                    b: 'Ukuran kembang api. Semakin besar ukurannya, semakin mantap ledakannya, tapi bisa bikin perangkat nge-lag.',
                 },
                 quality: {
-                    h: "Kualitas Grafis",
-                    b: "Kualitas grafis keseluruhan. Kalau animasinya patah-patah, coba turunin kualitasnya."
+                    h: 'Kualitas Grafis',
+                    b: 'Kualitas grafis keseluruhan. Kalau animasinya patah-patah, coba turunin kualitasnya.',
                 },
                 skyLighting: {
-                    h: "Cahaya Langit",
-                    b: "Bikin background nyala pas kembang api meledak. Kalau dirasa terlalu silau, ganti aja ke 'Redup' atau 'Mati'."
+                    h: 'Cahaya Langit',
+                    b: "Bikin background nyala pas kembang api meledak. Kalau dirasa terlalu silau, ganti aja ke 'Redup' atau 'Mati'.",
                 },
                 scaleFactor: {
-                    h: "Skala",
-                    b: "Buat ngatur ukuran semua kembang api, seolah-olah lu lagi maju atau mundur ngeliatnya."
+                    h: 'Skala',
+                    b: 'Buat ngatur ukuran semua kembang api, seolah-olah lu lagi maju atau mundur ngeliatnya.',
                 },
                 wordShell: {
-                    h: "Kembang Api Teks",
-                    b: "Kadang-kadang memunculkan kembang api berbentuk kata kustom. Tenang, ledakannya realistis banget ngikutin hukum fisika loh!"
+                    h: 'Kembang Api Teks',
+                    b: 'Kadang-kadang memunculkan kembang api berbentuk kata kustom. Tenang, ledakannya realistis banget ngikutin hukum fisika loh!',
                 },
                 wordText: {
-                    h: "Kata Kustom",
-                    b: "Daftar kata yang mau ditampilin (pisahin pakai koma). Biar cakep dan jelas dibaca, usahain katanya pendek-pendek aja (misal: BOOM, WOW, MANTAP)."
+                    h: 'Kata Kustom',
+                    b: 'Daftar kata yang mau ditampilin (pisahin pakai koma). Biar cakep dan jelas dibaca, usahain katanya pendek-pendek aja (misal: BOOM, WOW, MANTAP).',
                 },
                 whistleShell: {
-                    h: "Efek Roket Siul",
-                    b: "Bikin roket terbang meliuk-liuk (wobble) sambil ngeluarin suara siulan khas kembang api meluncur!"
+                    h: 'Efek Roket Siul',
+                    b: 'Bikin roket terbang meliuk-liuk (wobble) sambil ngeluarin suara siulan khas kembang api meluncur!',
                 },
                 autoLaunch: {
-                    h: "Tembak Otomatis",
-                    b: "Otomatis nembakin kembang api tanpa henti. Tinggal duduk manis dan nikmatin aja, atau matiin buat kontrol manual."
+                    h: 'Tembak Otomatis',
+                    b: 'Otomatis nembakin kembang api tanpa henti. Tinggal duduk manis dan nikmatin aja, atau matiin buat kontrol manual.',
                 },
                 finaleMode: {
-                    h: "Mode Finale",
-                    b: "Ngeluarin ledakan kembang api bertubi-tubi di akhir. Rawan bikin nge-lag. Harus nyalain 'Tembak Otomatis' dulu."
+                    h: 'Mode Finale',
+                    b: "Ngeluarin ledakan kembang api bertubi-tubi di akhir. Rawan bikin nge-lag. Harus nyalain 'Tembak Otomatis' dulu.",
                 },
                 whistleOnly: {
-                    h: "Mode Siul Saja",
-                    b: "Memaksa semua peluncuran jadi roket siulan (screamer) liar dengan ledakan petasan kecil di akhir."
+                    h: 'Mode Siul Saja',
+                    b: 'Memaksa semua peluncuran jadi roket siulan (screamer) liar dengan ledakan petasan kecil di akhir.',
                 },
                 hideControls: {
-                    h: "Sembunyikan Tombol",
-                    b: "Ngapus tombol transparan di atas layar biar bersih. Kalau mau buka menu lagi, klik aja di pojok kanan atas."
+                    h: 'Sembunyikan Tombol',
+                    b: 'Ngapus tombol transparan di atas layar biar bersih. Kalau mau buka menu lagi, klik aja di pojok kanan atas.',
                 },
                 fullscreen: {
-                    h: "Layar Penuh",
-                    b: "Bikin tampilannya penuh nutupin layar."
+                    h: 'Layar Penuh',
+                    b: 'Bikin tampilannya penuh nutupin layar.',
                 },
                 wakeLock: {
-                    h: "Layar Tetap Menyala",
-                    b: "Mencegah layar HP kamu mati otomatis atau standby saat simulator sedang berjalan."
+                    h: 'Layar Tetap Menyala',
+                    b: 'Mencegah layar HP kamu mati otomatis atau standby saat simulator sedang berjalan.',
                 },
                 longExposure: {
-                    h: "Mode Shutter Terbuka",
-                    b: "Efek eksperimental yang ninggalin jejak cahaya panjang, mirip gaya foto 'Long Exposure' pakai kamera."
-                }
-            }
-        }
+                    h: 'Mode Shutter Terbuka',
+                    b: "Efek eksperimental yang ninggalin jejak cahaya panjang, mirip gaya foto 'Long Exposure' pakai kamera.",
+                },
+            },
+        },
     };
 }
 
 /**
  * I18n Manager
-*/
+ */
 export class I18nManager {
     constructor() {
         this.supportedLangs = ['en', 'id'];
@@ -240,12 +248,17 @@ export class I18nManager {
             saved = localStorage.getItem('firework_lang');
         } catch (e) {}
         this.selectedSetting = saved || 'auto';
-        this.currentLang = this.selectedSetting === 'auto' ? this.detectSystemLang() : this.selectedSetting;
+        this.currentLang =
+            this.selectedSetting === 'auto'
+                ? this.detectSystemLang()
+                : this.selectedSetting;
     }
 
     detectSystemLang() {
         const sysLang = navigator.language.split('-')[0].toLowerCase();
-        return this.supportedLangs.includes(sysLang) ? sysLang : this.defaultLang;
+        return this.supportedLangs.includes(sysLang)
+            ? sysLang
+            : this.defaultLang;
     }
 
     setLanguage(setting) {
@@ -253,7 +266,8 @@ export class I18nManager {
         try {
             localStorage.setItem('firework_lang', setting);
         } catch (e) {}
-        this.currentLang = setting === 'auto' ? this.detectSystemLang() : setting;
+        this.currentLang =
+            setting === 'auto' ? this.detectSystemLang() : setting;
         this.translateDOM();
     }
 
@@ -276,7 +290,7 @@ export class I18nManager {
     }
 
     translateDOM() {
-        document.querySelectorAll('[data-i18n]').forEach(el => {
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
             el.innerHTML = this.t(el.getAttribute('data-i18n'));
         });
     }

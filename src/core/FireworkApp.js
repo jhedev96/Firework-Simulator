@@ -13,7 +13,7 @@ import { WakeLockManager } from '@/managers/WakeLockManager';
 
 /**
  * FireworkApp (Main Orchestrator)
-*/
+ */
 export class FireworkApp {
     constructor(simSpeed) {
         this.simSpeed = simSpeed || 1;
@@ -29,47 +29,55 @@ export class FireworkApp {
         this.sequenceManager = new SequenceManager(this);
 
         this.stateManager.subscribe((state, prevState) => {
-            if (this.stateManager.canPlaySound !== (prevState.isRunning && prevState.soundEnabled)) {
-                if (this.stateManager.canPlaySound) this.soundManager.resumeAll();
+            if (
+                this.stateManager.canPlaySound !==
+                (prevState.isRunning && prevState.soundEnabled)
+            ) {
+                if (this.stateManager.canPlaySound)
+                    this.soundManager.resumeAll();
                 else this.soundManager.pauseAll();
             }
             if (+state.config.skyLighting === Constants.SKY_LIGHT_NONE) {
-                if (this.ui.nodes.canvasContainer) this.ui.nodes.canvasContainer.style.backgroundColor = '#000';
+                if (this.ui.nodes.canvasContainer)
+                    this.ui.nodes.canvasContainer.style.backgroundColor =
+                        '#000';
             }
         });
     }
 
     #init() {
         this.stateManager.setState({
-            paused: false
+            paused: false,
         });
         this.ui.render(this.stateManager.state, this.stateManager.state);
-        this.renderer.mainStage.addEventListener('ticker', (ft, lag) => this.update(ft, lag));
+        this.renderer.mainStage.addEventListener('ticker', (ft, lag) =>
+            this.update(ft, lag),
+        );
     }
 
     update(frameTime, lag) {
         if (!this.stateManager.isRunning) return;
-
         const timeStep = frameTime * this.simSpeed;
         const speed = this.simSpeed * lag;
-
         this.renderer.currentFrame++;
-        if (!this.inputManager.isUpdatingSpeed) this.renderer.speedBarOpacity = Math.max(0, this.renderer.speedBarOpacity - lag / 30);
-
+        if (!this.inputManager.isUpdatingSpeed)
+            this.renderer.speedBarOpacity = Math.max(
+                0,
+                this.renderer.speedBarOpacity - lag / 30,
+            );
         this.sequenceManager.update(timeStep);
 
         const starDrag = 1 - (1 - 0.98) * speed;
         const starDragHeavy = 1 - (1 - 0.992) * speed;
         const sparkDrag = 1 - (1 - 0.9) * speed;
-        const gAcc = timeStep / 1000 * Constants.GRAVITY;
+        const gAcc = (timeStep / 1000) * Constants.GRAVITY;
 
-        Utils.colorCodesWithInvis.forEach(color => {
+        Utils.colorCodesWithInvis.forEach((color) => {
             const stars = this.particles.stars[color];
             for (let i = stars.length - 1; i >= 0; i--) {
                 const star = stars[i];
                 if (star.updateFrame === this.renderer.currentFrame) continue;
                 star.updateFrame = this.renderer.currentFrame;
-
                 star.life -= timeStep;
                 if (star.life <= 0) {
                     stars.splice(i, 1);
@@ -77,20 +85,22 @@ export class FireworkApp {
                 } else {
                     const burnRate = Math.pow(star.life / star.fullLife, 0.5);
                     const burnRateInverse = 1 - burnRate;
-
                     star.prevX = star.x;
                     star.prevY = star.y;
                     star.x += star.speedX * speed;
                     star.y += star.speedY * speed;
 
-                    // ─────────────────────────────────────────────────────────
-                    // [REVISI WHISTLE V4.2] Chaotic Spiral & Thrust Decay
-                    // ─────────────────────────────────────────────────────────
+                    // =========================================================
+                    // Chaotic Spiral & Thrust Decay
+                    // =========================================================
                     if (star.wobble) {
                         star.wobblePhaseX += star.wobbleFreqX * timeStep;
                         star.wobblePhaseY += star.wobbleFreqY * timeStep; // Frekuensi beda = Lissajous Spiral
 
-                        const currentSpeed = Math.sqrt(star.speedX * star.speedX + star.speedY * star.speedY);
+                        const currentSpeed = Math.sqrt(
+                            star.speedX * star.speedX +
+                                star.speedY * star.speedY,
+                        );
                         if (currentSpeed > 0) {
                             const dirX = star.speedX / currentSpeed;
                             const dirY = star.speedY / currentSpeed;
@@ -100,12 +110,17 @@ export class FireworkApp {
                             const perpY = dirX;
 
                             // Bikin spiral gila dari gabungan Sin dan Cos
-                            const wobbleForce = Math.sin(star.wobblePhaseX) * star.wobbleAmp;
-                            const chaoticForce = Math.cos(star.wobblePhaseY) * (star.wobbleAmp * 0.6); // Sedikit variasi tambahan
+                            const wobbleForce =
+                                Math.sin(star.wobblePhaseX) * star.wobbleAmp;
+                            const chaoticForce =
+                                Math.cos(star.wobblePhaseY) *
+                                (star.wobbleAmp * 0.6); // Sedikit variasi tambahan
 
                             // Dorong menyamping sama searah gerakan biar kerasa muter
-                            star.speedX += perpX * wobbleForce + dirX * chaoticForce;
-                            star.speedY += perpY * wobbleForce + dirY * chaoticForce;
+                            star.speedX +=
+                                perpX * wobbleForce + dirX * chaoticForce;
+                            star.speedY +=
+                                perpY * wobbleForce + dirY * chaoticForce;
 
                             // Thrust dorong roket ngelawan drag, tapi makin lama makin habis
                             star.speedX += dirX * star.thrust;
@@ -115,7 +130,7 @@ export class FireworkApp {
                             star.thrust *= 0.96;
                         }
                     }
-                    // ─────────────────────────────────────────────────────────
+                    // =========================================================
 
                     if (!star.heavy) {
                         star.speedX *= starDrag;
@@ -128,27 +143,43 @@ export class FireworkApp {
 
                     if (star.spinRadius) {
                         star.spinAngle += star.spinSpeed * speed;
-                        star.x += Math.sin(star.spinAngle) * star.spinRadius * speed;
-                        star.y += Math.cos(star.spinAngle) * star.spinRadius * speed;
+                        star.x +=
+                            Math.sin(star.spinAngle) * star.spinRadius * speed;
+                        star.y +=
+                            Math.cos(star.spinAngle) * star.spinRadius * speed;
                     }
-
                     if (star.sparkFreq) {
                         star.sparkTimer -= timeStep;
                         while (star.sparkTimer < 0) {
-                            star.sparkTimer += star.sparkFreq * 0.75 + star.sparkFreq * burnRateInverse * 4;
-                            this.particles.addSpark(star.x, star.y, star.sparkColor, Math.random() * Constants.PI_2, Math.random() * star.sparkSpeed * burnRate, star.sparkLife * 0.8 + Math.random() * star.sparkLifeVariation * star.sparkLife);
+                            star.sparkTimer +=
+                                star.sparkFreq * 0.75 +
+                                star.sparkFreq * burnRateInverse * 4;
+                            this.particles.addSpark(
+                                star.x,
+                                star.y,
+                                star.sparkColor,
+                                Math.random() * Constants.PI_2,
+                                Math.random() * star.sparkSpeed * burnRate,
+                                star.sparkLife * 0.8 +
+                                    Math.random() *
+                                        star.sparkLifeVariation *
+                                        star.sparkLife,
+                            );
                         }
                     }
-
                     if (star.life < star.transitionTime) {
                         if (star.secondColor && !star.colorChanged) {
                             star.colorChanged = true;
                             star.color = star.secondColor;
                             stars.splice(i, 1);
                             this.particles.stars[star.secondColor].push(star);
-                            if (star.secondColor === Constants.INVISIBLE) star.sparkFreq = 0;
+                            if (star.secondColor === Constants.INVISIBLE)
+                                star.sparkFreq = 0;
                         }
-                        if (star.strobe) star.visible = Math.floor(star.life / star.strobeFreq) % 3 === 0;
+                        if (star.strobe)
+                            star.visible =
+                                Math.floor(star.life / star.strobeFreq) % 3 ===
+                                0;
                     }
                 }
             }
@@ -180,13 +211,21 @@ export class FireworkApp {
             if (Constants.IS_HEADER) {
                 this.#init();
             } else {
-                const statusEl = document.querySelector('.loading-init__status');
+                const statusEl = document.querySelector(
+                    '.loading-init__status',
+                );
                 if (statusEl) statusEl.textContent = this.i18n.t('ui.lighting');
                 setTimeout(() => {
-                    this.soundManager.preload().then(() => this.#init(), reason => {
-                        this.#init();
-                        console.warn('Audio preload failed, initializing without audio:', reason);
-                    });
+                    this.soundManager.preload().then(
+                        () => this.#init(),
+                        (reason) => {
+                            this.#init();
+                            console.warn(
+                                'Audio preload failed, initializing without audio:',
+                                reason,
+                            );
+                        },
+                    );
                 }, 2000);
             }
         });

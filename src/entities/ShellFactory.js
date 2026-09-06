@@ -2,30 +2,39 @@ import { Constants } from '@/utils/Constants';
 import { Utils } from '@/utils/Utils';
 import { Shell } from '@/entities/Shell';
 
-
 /**
  * ShellFactory
-*/
+ */
 export class ShellFactory {
     static crysanthemumShell(size, app) {
         const glitter = Math.random() < 0.25;
         const singleColor = Math.random() < 0.72;
-        const color = singleColor ? Utils.randomColor({
-            limitWhite: true
-        }) : [Utils.randomColor(), Utils.randomColor({
-            notSame: true
-        })];
+        const color = singleColor
+            ? Utils.randomColor({
+                  limitWhite: true,
+              })
+            : [
+                  Utils.randomColor(),
+                  Utils.randomColor({
+                      notSame: true,
+                  }),
+              ];
         const pistil = singleColor && Math.random() < 0.42;
         const pistilColor = pistil && Utils.makePistilColor(color);
-        const secondColor = singleColor && (Math.random() < 0.2 || color === Constants.COLOR.White) ? pistilColor || Utils.randomColor({
-            notColor: color,
-            limitWhite: true
-        }) : null;
-
+        const secondColor =
+            singleColor &&
+            (Math.random() < 0.2 || color === Constants.COLOR.White)
+                ? pistilColor ||
+                  Utils.randomColor({
+                      notColor: color,
+                      limitWhite: true,
+                  })
+                : null;
         let starDensity = glitter ? 1.1 : 1.25;
-        if (app.stateManager.quality === Constants.QUALITY_LOW) starDensity *= 0.8;
-        if (app.stateManager.quality === Constants.QUALITY_HIGH) starDensity = 1.2;
-
+        if (app.stateManager.quality === Constants.QUALITY_LOW)
+            starDensity *= 0.8;
+        if (app.stateManager.quality === Constants.QUALITY_HIGH)
+            starDensity = 1.2;
         return {
             shellSize: size,
             spreadSize: 300 + size * 100,
@@ -37,7 +46,10 @@ export class ShellFactory {
             glitterColor: Utils.whiteOrGold(),
             pistil,
             pistilColor,
-            streamers: !pistil && color !== Constants.COLOR.White && Math.random() < 0.42
+            streamers:
+                !pistil &&
+                color !== Constants.COLOR.White &&
+                Math.random() < 0.42,
         };
     }
 
@@ -47,7 +59,7 @@ export class ShellFactory {
         shell.streamers = true;
         shell.color = Constants.INVISIBLE;
         shell.secondColor = Utils.randomColor({
-            notColor: Constants.COLOR.White
+            notColor: Constants.COLOR.White,
         });
         shell.glitter = '';
         return shell;
@@ -55,7 +67,7 @@ export class ShellFactory {
 
     static strobeShell(size) {
         const color = Utils.randomColor({
-            limitWhite: true
+            limitWhite: true,
         });
         return {
             shellSize: size,
@@ -69,7 +81,7 @@ export class ShellFactory {
             strobe: true,
             strobeColor: Math.random() < 0.5 ? Constants.COLOR.White : null,
             pistil: Math.random() < 0.5,
-            pistilColor: Utils.makePistilColor(color)
+            pistilColor: Utils.makePistilColor(color),
         };
     }
 
@@ -81,7 +93,7 @@ export class ShellFactory {
             spreadSize: 250 + size * 75,
             starDensity: thick ? 0.15 : 0.4,
             starLife: 1800 + size * 200,
-            glitter: thick ? 'thick' : 'heavy'
+            glitter: thick ? 'thick' : 'heavy',
         };
     }
 
@@ -98,14 +110,17 @@ export class ShellFactory {
             pistil,
             pistilColor: Utils.makePistilColor(color),
             glitter: !pistil ? 'light' : '',
-            glitterColor: color === Constants.COLOR.Gold ? Constants.COLOR.Gold : Constants.COLOR.White,
-            streamers: Math.random() < 0.3
+            glitterColor:
+                color === Constants.COLOR.Gold
+                    ? Constants.COLOR.Gold
+                    : Constants.COLOR.White,
+            streamers: Math.random() < 0.3,
         };
     }
 
     static crossetteShell(size) {
         const color = Utils.randomColor({
-            limitWhite: true
+            limitWhite: true,
         });
         return {
             shellSize: size,
@@ -116,7 +131,7 @@ export class ShellFactory {
             color,
             crossette: true,
             pistil: Math.random() < 0.5,
-            pistilColor: Utils.makePistilColor(color)
+            pistilColor: Utils.makePistilColor(color),
         };
     }
 
@@ -127,10 +142,18 @@ export class ShellFactory {
             starDensity: 0.12,
             starLife: 500 + size * 50,
             starLifeVariation: 0.5,
-            color: Math.random() < 0.65 ? 'random' : (Math.random() < 0.15 ? Utils.randomColor() : [Utils.randomColor(), Utils.randomColor({
-                notSame: true
-            })]),
-            floral: true
+            color:
+                Math.random() < 0.65
+                    ? 'random'
+                    : Math.random() < 0.15
+                      ? Utils.randomColor()
+                      : [
+                            Utils.randomColor(),
+                            Utils.randomColor({
+                                notSame: true,
+                            }),
+                        ],
+            floral: true,
         };
     }
 
@@ -144,7 +167,7 @@ export class ShellFactory {
             starLifeVariation: 0.5,
             glitter: 'medium',
             glitterColor: Constants.COLOR.Gold,
-            fallingLeaves: true
+            fallingLeaves: true,
         };
     }
 
@@ -156,16 +179,18 @@ export class ShellFactory {
             starLife: 3000 + size * 300,
             glitter: 'willow',
             glitterColor: Constants.COLOR.Gold,
-            color: Constants.INVISIBLE
+            color: Constants.INVISIBLE,
         };
     }
 
     static crackleShell(size, app) {
-        const color = Math.random() < 0.75 ? Constants.COLOR.Gold : Utils.randomColor();
+        const color =
+            Math.random() < 0.75 ? Constants.COLOR.Gold : Utils.randomColor();
         return {
             shellSize: size,
             spreadSize: 380 + size * 75,
-            starDensity: app.stateManager.quality === Constants.QUALITY_LOW ? 0.65 : 1,
+            starDensity:
+                app.stateManager.quality === Constants.QUALITY_LOW ? 0.65 : 1,
             starLife: 600 + size * 100,
             starLifeVariation: 0.32,
             glitter: 'light',
@@ -173,7 +198,7 @@ export class ShellFactory {
             color,
             crackle: true,
             pistil: Math.random() < 0.65,
-            pistilColor: Utils.makePistilColor(color)
+            pistilColor: Utils.makePistilColor(color),
         };
     }
 
@@ -188,10 +213,11 @@ export class ShellFactory {
             starLife: 2500 + size * 300,
             glitter: 'medium',
             glitterColor: Math.random() < 0.5 ? Utils.whiteOrGold() : color,
-            strobe: color === Constants.COLOR.White
+            strobe: color === Constants.COLOR.White,
         };
     }
 
+    // new v4.dev2
     static screamerShell(size) {
         return {
             shellSize: size,
@@ -200,24 +226,80 @@ export class ShellFactory {
             starLife: 400 + size * 50,
             color: Constants.COLOR.White, // Warnanya putih/silver aja biar kayak mesiu biasa
             crackle: true, // Biar pas meledak cuma bunyi kretek-kretek
-            disableWord: true // Biar tulisan nggak muncul pas mode ini nyala
+            disableWord: true, // Biar tulisan nggak muncul pas mode ini nyala
+        };
+    }
+
+    // new v5
+    static peonyShell(size) {
+        const color = Utils.randomColor({ limitWhite: true });
+        return {
+            shellSize: size,
+            spreadSize: 320 + size * 90,
+            starLife: 600 + size * 120, // Lebih cepet pudar dibanding Chrysanthemum
+            starDensity: 1.4, // Padet banget
+            color,
+            glitter: '', // Kunci utama Peony: Tanpa ekor/trail!
+            pistil: Math.random() < 0.3,
+            pistilColor: Utils.makePistilColor(color),
+        };
+    }
+
+    static brocadeCrownShell(size) {
+        return {
+            shellSize: size,
+            spreadSize: 380 + size * 100,
+            starDensity: 0.8,
+            starLife: 3500 + size * 300, // Umurnya panjang banget
+            glitter: 'willow',
+            glitterColor: Constants.COLOR.Gold, // Full emas sultan
+            color: Constants.INVISIBLE,
+            heavy: true, // Bikin gravitasinya narik lebih kuat ke bawah
+        };
+    }
+
+    static mineShell(size) {
+        return {
+            shellSize: size,
+            spreadSize: 400 + size * 80,
+            starDensity: 1.5,
+            starLife: 900 + size * 150,
+            color: Math.random() < 0.5 ? 'random' : Utils.randomColor(),
+            mine: true, // Flag penanda ini Ground Mine
+            glitter: Math.random() < 0.5 ? 'light' : '',
+        };
+    }
+
+    static patternHeartShell(size) {
+        return {
+            shellSize: size,
+            spreadSize: 220 + size * 40,
+            starLife: 1200 + size * 200,
+            color: Constants.COLOR.Red,
+            pattern: 'heart', // Flag pola
+            disableWord: true, // Biar nggak nabrak sama Word Shell
         };
     }
 
     static get shellTypes() {
         return {
-            'Random': (size, app) => ShellFactory.randomShell(size, app),
-            'Crackle': ShellFactory.crackleShell,
-            'Crossette': ShellFactory.crossetteShell,
-            'Crysanthemum': ShellFactory.crysanthemumShell,
+            Random: (size, app) => ShellFactory.randomShell(size, app),
+            Crackle: ShellFactory.crackleShell,
+            Crossette: ShellFactory.crossetteShell,
+            Crysanthemum: ShellFactory.crysanthemumShell,
             'Falling Leaves': ShellFactory.fallingLeavesShell,
-            'Floral': ShellFactory.floralShell,
-            'Ghost': ShellFactory.ghostShell,
+            Floral: ShellFactory.floralShell,
+            Ghost: ShellFactory.ghostShell,
             'Horse Tail': ShellFactory.horsetailShell,
-            'Palm': ShellFactory.palmShell,
-            'Ring': ShellFactory.ringShell,
-            'Strobe': ShellFactory.strobeShell,
-            'Willow': ShellFactory.willowShell
+            Palm: ShellFactory.palmShell,
+            Ring: ShellFactory.ringShell,
+            Strobe: ShellFactory.strobeShell,
+            Willow: ShellFactory.willowShell,
+            // new
+            Peony: ShellFactory.peonyShell,
+            'Brocade Crown': ShellFactory.brocadeCrownShell,
+            'Ground Mine': ShellFactory.mineShell,
+            'Pattern Heart': ShellFactory.patternHeartShell,
         };
     }
 
@@ -226,55 +308,104 @@ export class ShellFactory {
     }
 
     static randomShellName() {
-        return Math.random() < 0.5 ? 'Crysanthemum' : ShellFactory.shellNames[(Math.random() * (ShellFactory.shellNames.length - 1) + 1) | 0];
+        return Math.random() < 0.5
+            ? 'Crysanthemum'
+            : ShellFactory.shellNames[
+                  (Math.random() * (ShellFactory.shellNames.length - 1) + 1) | 0
+              ];
     }
 
     static randomShell(size, app) {
-        if (Constants.IS_HEADER) return ShellFactory.randomFastShell()(size, app);
-        return ShellFactory.shellTypes[ShellFactory.randomShellName()](size, app);
+        if (Constants.IS_HEADER)
+            return ShellFactory.randomFastShell()(size, app);
+        return ShellFactory.shellTypes[ShellFactory.randomShellName()](
+            size,
+            app,
+        );
     }
 
     static randomFastShell() {
         let shellName = ShellFactory.randomShellName();
-        while (['Falling Leaves', 'Floral', 'Willow'].includes(shellName)) shellName = ShellFactory.randomShellName();
+        while (['Falling Leaves', 'Floral', 'Willow'].includes(shellName))
+            shellName = ShellFactory.randomShellName();
         return ShellFactory.shellTypes[shellName];
     }
 
     static crossetteEffect(star, app) {
-        Utils.createParticleArc(Math.random() * Constants.PI_HALF, Constants.PI_2, 4, 0.5, angle => {
-            app.particles.addStar(star.x, star.y, star.color, angle, Math.random() * 0.6 + 0.75, 600);
-        });
+        Utils.createParticleArc(
+            Math.random() * Constants.PI_HALF,
+            Constants.PI_2,
+            4,
+            0.5,
+            (angle) => {
+                app.particles.addStar(
+                    star.x,
+                    star.y,
+                    star.color,
+                    angle,
+                    Math.random() * 0.6 + 0.75,
+                    600,
+                );
+            },
+        );
     }
 
     static floralEffect(star, app) {
-        Utils.createBurst(12 + 6 * app.stateManager.quality, (angle, speedMult) => {
-            app.particles.addStar(star.x, star.y, star.color, angle, speedMult * 2.4, 1000 + Math.random() * 300, star.speedX, star.speedY);
-        });
+        Utils.createBurst(
+            12 + 6 * app.stateManager.quality,
+            (angle, speedMult) => {
+                app.particles.addStar(
+                    star.x,
+                    star.y,
+                    star.color,
+                    angle,
+                    speedMult * 2.4,
+                    1000 + Math.random() * 300,
+                    star.speedX,
+                    star.speedY,
+                );
+            },
+        );
         app.particles.addBurstFlash(star.x, star.y, 46);
         app.soundManager.playSound('burstSmall');
     }
 
     static fallingLeavesEffect(star, app) {
         Utils.createBurst(7, (angle, speedMult) => {
-            const newStar = app.particles.addStar(star.x, star.y, Constants.INVISIBLE, angle, speedMult * 2.4, 2400 + Math.random() * 600, star.speedX, star.speedY);
-
+            const newStar = app.particles.addStar(
+                star.x,
+                star.y,
+                Constants.INVISIBLE,
+                angle,
+                speedMult * 2.4,
+                2400 + Math.random() * 600,
+                star.speedX,
+                star.speedY,
+            );
             Object.assign(newStar, {
                 sparkColor: Constants.COLOR.Gold,
                 sparkFreq: 144 / app.stateManager.quality,
                 sparkSpeed: 0.28,
                 sparkLife: 750,
-                sparkLifeVariation: 3.2
+                sparkLifeVariation: 3.2,
             });
         });
-
         app.particles.addBurstFlash(star.x, star.y, 46);
         app.soundManager.playSound('burstSmall');
     }
 
     static crackleEffect(star, app) {
-        const count = app.stateManager.quality === Constants.QUALITY_HIGH ? 32 : 16;
-        Utils.createParticleArc(0, Constants.PI_2, count, 1.8, angle => {
-            app.particles.addSpark(star.x, star.y, Constants.COLOR.Gold, angle, Math.pow(Math.random(), 0.45) * 2.4, 300 + Math.random() * 200);
+        const count =
+            app.stateManager.quality === Constants.QUALITY_HIGH ? 32 : 16;
+        Utils.createParticleArc(0, Constants.PI_2, count, 1.8, (angle) => {
+            app.particles.addSpark(
+                star.x,
+                star.y,
+                Constants.COLOR.Gold,
+                angle,
+                Math.pow(Math.random(), 0.45) * 2.4,
+                300 + Math.random() * 200,
+            );
         });
     }
 
@@ -283,15 +414,23 @@ export class ShellFactory {
     }
 
     shellFromConfig(size) {
-        return ShellFactory.shellTypes[this.app.stateManager.shellName](size, this.app);
+        return ShellFactory.shellTypes[this.app.stateManager.shellName](
+            size,
+            this.app,
+        );
     }
 
     launchShellFromConfig(event) {
-        const shell = new Shell(this.shellFromConfig(this.app.stateManager.shellSize), this.app);
+        const shell = new Shell(
+            this.shellFromConfig(this.app.stateManager.shellSize),
+            this.app,
+        );
         const w = this.app.renderer.mainStage.width;
         const h = this.app.renderer.mainStage.height;
         const edge = 0.18;
-        const hPos = event ? event.x / w : (1 - edge * 2) * Math.random() + edge;
+        const hPos = event
+            ? event.x / w
+            : (1 - edge * 2) * Math.random() + edge;
         const vPos = event ? 1 - event.y / h : Math.random() * 0.75;
         shell.launch(hPos, vPos);
     }

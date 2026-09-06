@@ -1,9 +1,14 @@
 {
   "name": "firework-simulator",
   "private": true,
-  "version": "4.5.0",
+  "version": "5.0.0",
   "description": "An advanced, highly realistic, and feature-rich fireworks simulation built with HTML5 Canvas and JavaScript.",
-  "keywords": ["firework", "firework-simulator", "kembang-api", "hanabi"],
+  "keywords": [
+    "firework",
+    "firework-simulator",
+    "kembang-api",
+    "hanabi"
+  ],
   "author": "JheDev",
   "license": "GNU GPL V3",
   "type": "module",
@@ -18,5 +23,8 @@
     "terser": "^5.46.1",
     "vite": "^7.1.3",
     "vite-plugin-html": "^3.2.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }

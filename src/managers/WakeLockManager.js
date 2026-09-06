@@ -1,6 +1,6 @@
 /**
  * Wake Lock Manager
-*/
+ */
 export class WakeLockManager {
     constructor(stateManager) {
         this.stateManager = stateManager;
@@ -9,7 +9,10 @@ export class WakeLockManager {
         // Handle kalo user pindah tab, wake lock otomatis lepas dari browser.
         // Jadi kita request ulang pas tabnya diliat lagi.
         document.addEventListener('visibilitychange', () => {
-            if (this.wakeLock !== null && document.visibilityState === 'visible') {
+            if (
+                this.wakeLock !== null &&
+                document.visibilityState === 'visible'
+            ) {
                 this.requestLock();
             }
         });
@@ -33,10 +36,9 @@ export class WakeLockManager {
 
     releaseLock() {
         if (this.wakeLock !== null) {
-            this.wakeLock.release()
-                .then(() => {
-                    this.wakeLock = null;
-                });
+            this.wakeLock.release().then(() => {
+                this.wakeLock = null;
+            });
         }
     }
 }

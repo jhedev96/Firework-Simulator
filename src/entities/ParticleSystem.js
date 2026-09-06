@@ -3,7 +3,7 @@ import { Utils } from '@/utils/Utils';
 
 /**
  * ParticleSystem
-*/
+ */
 export class ParticleSystem {
     constructor(app) {
         this.app = app;
@@ -17,7 +17,7 @@ export class ParticleSystem {
 
     createCollection() {
         const col = {};
-        Utils.colorCodesWithInvis.forEach(c => col[c] = []);
+        Utils.colorCodesWithInvis.forEach((c) => (col[c] = []));
         return col;
     }
 
@@ -45,7 +45,6 @@ export class ParticleSystem {
         instance.sparkLifeVariation = 0.25;
         instance.strobe = false;
 
-        // [REVISI WHISTLE PHYSICS] Properties untuk engine fisika spiral
         instance.wobble = false;
         instance.wobblePhaseX = 0;
         instance.wobblePhaseY = 0;
@@ -77,7 +76,6 @@ export class ParticleSystem {
         instance.speedX = Math.sin(angle) * speed;
         instance.speedY = Math.cos(angle) * speed;
         instance.life = life;
-
         this.sparks[color].push(instance);
         return instance;
     }
@@ -91,7 +89,6 @@ export class ParticleSystem {
         instance.x = x;
         instance.y = y;
         instance.radius = radius;
-
         this.burstFlashes.push(instance);
         return instance;
     }

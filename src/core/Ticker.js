@@ -1,6 +1,6 @@
 /**
  * Ticker
-*/
+ */
 export class Ticker {
     static started = false;
     static lastTimestamp = 0;
@@ -9,7 +9,9 @@ export class Ticker {
     // will call function reference repeatedly once registered
     static addListener(callback) {
         if (typeof callback !== 'function') {
-            throw new Error('Ticker.addListener() requires a function reference passed for a callback.');
+            throw new Error(
+                'Ticker.addListener() requires a function reference passed for a callback.',
+            );
         }
 
         Ticker.listeners.push(callback);
@@ -43,7 +45,9 @@ export class Ticker {
         }
 
         // fire custom listeners
-        Ticker.listeners.forEach(listener => listener.call(window, frameTime, frameTime / 16.6667));
+        Ticker.listeners.forEach((listener) =>
+            listener.call(window, frameTime, frameTime / 16.6667),
+        );
 
         // always queue another frame
         Ticker.queueFrame();

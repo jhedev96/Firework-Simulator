@@ -4,7 +4,7 @@ import { Utils } from '@/utils/Utils';
 
 /**
  * State Manager (Redux style)
-*/
+ */
 export class StateManager {
     constructor() {
         this._listeners = new Set();
@@ -13,13 +13,23 @@ export class StateManager {
             soundEnabled: false,
             menuOpen: false,
             openHelpTopic: null,
-            fullscreen: typeof FullScreen !== 'undefined' && FullScreen.fullscreenElement !== null,
+            fullscreen:
+                typeof FullScreen !== 'undefined' &&
+                FullScreen.fullscreenElement !== null,
             config: {
-                quality: String(Constants.IS_HIGH_END_DEVICE ? Constants.QUALITY_HIGH : Constants.QUALITY_NORMAL),
+                quality: String(
+                    Constants.IS_HIGH_END_DEVICE
+                        ? Constants.QUALITY_HIGH
+                        : Constants.QUALITY_NORMAL,
+                ),
                 shell: 'Random',
-                size: Constants.IS_DESKTOP ? '3' : Constants.IS_HEADER ? '1.2' : '2',
+                size: Constants.IS_DESKTOP
+                    ? '3'
+                    : Constants.IS_HEADER
+                      ? '1.2'
+                      : '2',
                 wordShell: true,
-                customWords: "HAPPY,BOOM,WOW",
+                customWords: 'HAPPY,BOOM,WOW',
                 whistles: true,
                 autoLaunch: true,
                 finale: false,
@@ -27,9 +37,13 @@ export class StateManager {
                 skyLighting: Constants.SKY_LIGHT_NORMAL + '',
                 hideControls: Constants.IS_HEADER,
                 longExposure: false,
-                scaleFactor: Constants.IS_MOBILE ? 0.9 : Constants.IS_HEADER ? 0.75 : 1,
+                scaleFactor: Constants.IS_MOBILE
+                    ? 0.9
+                    : Constants.IS_HEADER
+                      ? 0.75
+                      : 1,
                 wakeLock: false,
-            }
+            },
         };
         if (!Constants.IS_HEADER) this.load();
     }
@@ -40,18 +54,23 @@ export class StateManager {
     }
 
     _dispatch(prevState) {
-        this._listeners.forEach(listener => listener(this.state, prevState));
+        this._listeners.forEach((listener) => listener(this.state, prevState));
     }
 
     setState(nextState) {
         const prevState = {
             ...this.state,
             config: {
-                ...this.state.config
-            }
+                ...this.state.config,
+            },
         };
         this.state = Object.assign({}, this.state, nextState);
-        if (nextState.config) this.state.config = Object.assign({}, prevState.config, nextState.config);
+        if (nextState.config)
+            this.state.config = Object.assign(
+                {},
+                prevState.config,
+                nextState.config,
+            );
         this._dispatch(prevState);
         this.persist();
     }
@@ -60,21 +79,22 @@ export class StateManager {
         const sd = localStorage.getItem('cm_fireworks_v4');
         if (sd) {
             try {
-                const {
-                    data
-                } = JSON.parse(sd);
+                const { data } = JSON.parse(sd);
                 this.state.config = {
                     ...this.state.config,
-                    ...data
+                    ...data,
                 };
             } catch (e) {}
         }
     }
 
     persist() {
-        localStorage.setItem('cm_fireworks_v4', JSON.stringify({
-            data: this.state.config
-        }));
+        localStorage.setItem(
+            'cm_fireworks_v4',
+            JSON.stringify({
+                data: this.state.config,
+            }),
+        );
     }
 
     get isRunning() {
